@@ -48,7 +48,7 @@ run_Inscopix_calculate_params_after_cell_clustering
 Figure 7: 
 plot_mono_syn_tracing_results
 
-Also using: 
+Also includes: 
 calculate_rise_and_decay_times
 Get_wavelength_n_photons
 plot_curve_with_SEM
