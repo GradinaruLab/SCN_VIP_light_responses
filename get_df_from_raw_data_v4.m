@@ -11,10 +11,7 @@ fs=params.fs;
 %   end
 %% z-scored
 if Zscore
-    %all_dF = (all_dF - nanmedian(all_dF))./mad(baseline); % normalization using robust z-score    
-      all_dF = (all_dF - nanmedian(baseline))./mad(baseline); % normalization using robust z-score    
-     %   all_dF = (all_dF - nanmedian(baseline))./mad(all_dF); % normalization using robust z-score    
-
+        all_dF = (all_dF - nanmedian(baseline))./mad(baseline); % normalization using robust z-score      
 end
 %% smooth
 if Smth

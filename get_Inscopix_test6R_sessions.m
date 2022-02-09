@@ -2,7 +2,6 @@ function get_Inscopix_test6R_sessions
 % go over samples with test6R experiemnt of Inscopix and get the cell
 % activity 
 
- %mouse_ID={'50L','134R','148RR','168RL','177RR','264L','310L','303R'}; 
  mouse_ID={'50L','134R','148RR','168RL','177RR','264L','310L'}%
  all_cell_dF=[];
 all_cell_t=[]; 
@@ -45,7 +44,7 @@ xlim([0,all_t(end)])
 subplot(10,1,[2:10])
 imagesc([0 all_t(end)],[1, size(all_dF,1)],all_dF(flip(I),:))
 colormap(parula)
-caxis([0 12])
+caxis([0 8])
 colorbar
 xlabel('Time (sec)')
 ylabel('Cells')

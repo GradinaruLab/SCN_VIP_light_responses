@@ -2,8 +2,8 @@ function read_test6R_FP_general
 % Fiber photomtery data test6R, FP
 % Aug 2021 
 if_zscore=0;
-%experiment='blue_vs_red'
-experiment='opn4'
+experiment='blue_vs_red'
+%experiment='opn4'
 [my_path,states,intensities,g_colors,styles2,Groups,mouse_info]=get_exp_info_test6R_FP(experiment);
 
 

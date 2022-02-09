@@ -1,13 +1,10 @@
-function [all_dF] = FP_analysis_individual_test6R_with_params(mouse_info, my_path)
-% run single trial test6R
+function [all_dF] = FP_analysis_individual_test6R(mouse_info, my_path)
+% run single trial test6R 
 % mouse_info includes:ID,side,date,Sess,Sname,Gender,rig
 % MinPeakP,interval,bins,thresh
 experiment_type='VIPFP'
 %experiment_type='VIPFP_Onset'
-
 clear files_name1 files1 all_dF
-% LFcut = 4; % cut-off frequency of lowpass filter
-% order = 4; % N-th order for butterworth filter
 
 %% get parameters from file
 Ppath='D:\Data_Glab\fiberphotometry\';
@@ -16,35 +13,34 @@ par_file_name='ParametersFP';
 rel=NUMpar(1,7); % if peak analysis 'MinPeak' is relative to specific trial
 interval=NUMpar(1,1);
 bins=NUMpar(:,2)';%[2,5,10,20,30]; %time in minutes
+thresh=NUMpar(1,4);%3;
 FIGbinned=0;
 
-FIG=0;
+FIG=1;
 if nargin == 0
     
     my_path='D:\Data_Glab\fiberphotometry\TDT_test6R_red\';
-    my_path='D:\DATA_Glab\fiberphotometry\TDT_test6R_opn4_antagonist\';
+    %my_path='D:\DATA_Glab\fiberphotometry\TDT_test6R_opn4_antagonist\';
     
     FIG=1;
     %ID='VIPGC60N'; side='R'; Gender='M'; rig='TDT';
     % mouse_info.ID='VIPGC246RL';mouse_info.side='R';mouse_info.Gender='F'; mouse_info.rig='TDT_test6R_red';
-   % mouse_info.ID='VIPGC262R';mouse_info.side='R';mouse_info.Gender='M'; mouse_info.rig='TDT_test6R_red';
-   % mouse_info.ID='VIPGC286R';mouse_info.side='R';mouse_info.Gender='M'; mouse_info.rig='TDT_test6R_red';
-    
-    mouse_info.ID='VIPGC288RL';mouse_info.side='R';mouse_info.Gender='M'; mouse_info.rig='TDT_test6R_red';
+    mouse_info.ID='VIPGC262R';mouse_info.side='R';mouse_info.Gender='M'; mouse_info.rig='TDT_test6R_red';
+    % mouse_info.ID='VIPGC286R';mouse_info.side='R';mouse_info.Gender='M'; mouse_info.rig='TDT_test6R_red';
+    %mouse_info.ID='VIPGC288RL';mouse_info.side='R';mouse_info.Gender='M'; mouse_info.rig='TDT_test6R_red';
     %mouse_info.ID='VIPGC296R';mouse_info.side='R';mouse_info.Gender='M'; mouse_info.rig='TDT_test6R_red';
     % mouse_info.ID='VIPGC298L';mouse_info.side='R';mouse_info.Gender='F'; mouse_info.rig='TDT_test6R_red';
     
     %  mouse_info.ID='VIPGC247RRL';mouse_info.side='R';mouse_info.Gender='F'; mouse_info.rig='TDT_test6R_red';
-    %    mouse_info.ID='259R'; mouse_info.side='R';
+    % mouse_info.ID='259R'; mouse_info.side='R';
     %  mouse_info.ID='260L'; mouse_info.side='L';
     %  mouse_info.ID='261RL'; mouse_info.side='R';
     
     % date='111618';
     %date='052119';
-    mouse_info.date='081021'; mouse_info.Sname='test6R10';% 040319 - from now on, will include the number as well
-    mouse_info.date='020221'; mouse_info.Sname='test6R3';
+    mouse_info.date='081021';
+    mouse_info.Sname='test6R10';% 040319 - from now on, will include the number as well
 
-     mouse_info.date='101421'; mouse_info.Sname='test6R11';
 end
 
 % set more parameters
@@ -57,11 +53,11 @@ elseif strfind(mouse_info.Sname,'Lumencore')
 else
     Zscore=NUMpar(1,6);
 end
-%USE_INT_FOR_dF=0;
-%Smth=1;
+USE_INT_FOR_dF=0;
+Smth=1;
 Perc=NUMpar(1,5);
-% Lpass=1;
-% Hpass=1;
+Lpass=1;
+Hpass=1;
 %MinPeakP=4;% peak analysis parameter
 MinPeakP=NUMpar(1,3); % peak analysis parameter
 MinPeakW=4;% in seconds. later that should be read from xls file
@@ -152,7 +148,7 @@ all_dF.fs=fs;
 red_data(1,:)=interp1(t_original,all_dF.data(1,:),[1:0.05:t_original(end)]);
 red_data(2,:)=interp1(t_original,all_dF.data(2,:),[1:0.05:t_original(end)]);
 all_dF.data=red_data;
-%new_fs=length(all_dF.dF)/all_dF.t(end);
+new_fs=length(all_dF.dF)/all_dF.t(end);
 %all_dF.fit400=interp1(all_dF.t,all_dF.fit400,[1:0.05:all_dF.t(end)]);
 all_dF.fit400_original=interp1(t_original,all_dF.fit400_original,[1:0.05:t_original(end)]);
 
@@ -165,107 +161,6 @@ elseif rel==0
 end
 disp(['This sample peak thresh is: ' num2str(peak_thresh)])
 
-% adjust shift if needed
-shift=0;
-switch files1
-    case 'VIPGC259R_Rfiber_101420_test6Rred1'; shift=+3;
-    case 'VIPGC247RRL_Rfiber_101420_test6Rred1' ; shift=+3;
-    case 'VIPGC262R_Rfiber_020221_test6R3'; shift=-1;
-    case 'VIPGC286R_Rfiber_071921_test6R3'; shift=2;
-    case 'VIPGC296R_Rfiber_071921_test6R3'; shift= -1; 
-    case 'VIPGC298L_Rfiber_072121_test6R3'; shift=-1;
-    case 'VIPGC286R_Rfiber_071921_test6R4'; shift=2.1;
-    case 'VIPGC288RL_Rfiber_071921_test6R4'; shift=-1;
-    case 'VIPGC286R_Rfiber_072121_test6R5'; shift=2;
-    case   'VIPGC288RL_Rfiber_072121_test6R5'; shift=-1;
-    case 'VIPGC296R_Rfiber_072121_test6R5'; shift=-0.5;
-    case 'VIPGC298L_Rfiber_072721_test6R5'; shift=-0.5;
-    case 'VIPGC286R_Rfiber_072121_test6R6'; shift=2.5;
-    case 'VIPGC288RL_Rfiber_072121_test6R6'; shift=-0.5;
-    case 'VIPGC296R_Rfiber_072121_test6R6'; shift=-0.5;
-    case  'VIPGC298L_Rfiber_072721_test6R6'; shift=-0.5;
-    case 'VIPGC296R_Rfiber_081021_test6R9'; shift=2.5;
-    case 'VIPGC286R_Rfiber_081021_test6R10'; shift=2.5;
-    case 'VIPGC288RL_Rfiber_081021_test6R10'; shift=1;
-    case  'VIPGC296R_Rfiber_081021_test6R10'; shift=2;
-    case 'VIPGC313RL_Rfiber_101921_test6Rredhigh' ; shift=1;
-    case 'VIPGC296R_Rfiber_102021_test6Rredlow'; shift=+3;
-    case 'VIPGC313RL_Rfiber_101921_test6Rredlow'; shift=+3;
-    case 'VIPGC313RL_Rfiber_101821_test6Rbluehigh'; shift=1;
-    case 'VIPGC288RL_Rfiber_102121_test6RblueXmed'; shift=2;
-end
-light_array.light_off=light_array.light_off+shift;
-light_array.light_on=light_array.light_on+shift;
-
-% plot to check onset/offset
-figure
-plot(all_dF.t, all_dF.dF); hold on
-plot([light_array.light_off light_array.light_off],[-0.2 max(all_dF.dF)],'b'); hold on
-plot([light_array.light_on light_array.light_on],[-0.2 max(all_dF.dF)],'r'); hold on
-
-individual_response_figure=0;
-for i=1:length(light_array.light_on)
-    
-    sec5_ind=max(find(all_dF.t<=5));
-    sec2_ind=max(find(all_dF.t<=2));
-    inds=intersect(find(all_dF.t>light_array.light_on(i)),find(all_dF.t<light_array.light_off(i)));
-    [max_val(i) max_ind]=max(all_dF.dF(inds));
-   % [min_val min_ind]=min(all_dF.dF(inds(1)+max_ind:inds(end)));% find min after the max point 
-    [min_val min_ind]=min(all_dF.dF(inds));% find global min (when light is on) 
-    
-    % find time to peak
-    delta_t_to_max(i)=all_dF.t(inds(1)+max_ind)-all_dF.t(inds(1));
-    
-    % calculates integral around peak (+- 3 seconds), OR 5 seconds after
-    % peak
-   % int_df_around_max(i)=sum(all_dF.dF(inds(1)+max_ind:inds(1)+max_ind+sec5_ind));
-    int_df_around_max(i)=sum(all_dF.dF(inds(1)+max_ind-sec2_ind:inds(1)+max_ind+sec2_ind));% 4 seconds interval
-    int_df_around_min(i)=sum(all_dF.dF(inds(1)+min_ind-sec2_ind:inds(1)+min_ind+sec2_ind));% 4 seconds interval
-%     intersect(find(all_dF.t>light_array.light_off(i)-2*sec2_ind),find(all_dF.t<light_array.light_off(i)))
-%     find(all_dF.t<light_array.light_off(i))-42:find(all_dF.t<light_array.light_off(i))
-    L=length(all_dF.dF(inds(1)+max_ind-sec2_ind:inds(1)+max_ind+sec2_ind));
-    end_inds=max(find(all_dF.t<light_array.light_off(i)))-L: max(find(all_dF.t<light_array.light_off(i)));
-    
-    ratio_max_to_last(i)=sum(all_dF.dF(inds(1)+max_ind-sec2_ind:inds(1)+max_ind+sec2_ind))/sum(all_dF.dF(end_inds));
-    
-    ratio_max_to_min(i)=max_val(i)/min_val; % if it breaks here- check the light on defenitions- might need a shift (line 170)
-    % an alternative 2: 
-    %ratio_max_to_last(i)=mean(all_dF.dF(floor(mean(inds))-sec2_ind:ceil(mean(inds))+sec2_ind))/mean(all_dF.dF(end_inds));
-    % an alternative way: 
-    %ratio_max_to_last(i)=int_df_around_max(i)/int_df_around_min(i);
-    % calculate integral 'begin_int_time' seconds after light on (middle of the light
-    % application
-    
-    begin_int_time=10;% sec
-    inds2=intersect(find(all_dF.t>light_array.light_on(i)+begin_int_time),find(all_dF.t<light_array.light_off(i)));
-    int_df_last_half(i)=sum(all_dF.dF(inds2));
-    
-    
-    %     % calculate offset time (from light off to mean baseline
-    %     stop_ind=min(find(all_dF.t>light_array.light_off(i)));
-    %     % find the baseline index, satrting 3 seconds after light off- to
-    %     % calculate mean baseline
-    %     if i<length(light_array.light_on)
-    %         baseline_ind=intersect(find(all_dF.t>sec3_ind+light_array.light_off(i)),find(all_dF.t>light_array.light_on(i+1)));
-    %         full_baseline_ind=intersect(find(all_dF.t>light_array.light_off(i)),find(all_dF.t>light_array.light_on(i+1)));
-    %     else
-    %         baseline_ind=find(all_dF.t>sec3_ind+light_array.light_off(i));
-    %         full_baseline_ind=find(all_dF.t>light_array.light_off(i));
-    %     end
-    %     baseline_df=all_dF.dF(baseline_ind);
-    %     for indi=1:length(full_baseline_ind)
-    %         if all_dF.dF(full_baseline_ind(1)+indi-1)<(nanmean(baseline_df)+(1/3)*(all_dF.dF(stop_ind)-nanmean(baseline_df)))
-    %             offset_ind(indi)=full_baseline_ind(1)+indi-1;
-    %         end
-    %     end
-    %     offset_times(i)=
-    %
-    if individual_response_figure
-        figure
-        plot(all_dF.t(inds),all_dF.dF(inds)); hold on
-        plot([all_dF.t(inds(1)+max_ind) all_dF.t(inds(1)+max_ind)],[-0.2 max(all_dF.dF)],'r'); hold on
-    end
-end
 
 [pks{1},locs{1},w{1},p{1}]=findpeaks(all_dF.dF,all_dF.t,'Annotate','extents','WidthReference','halfheight','MinPeakProminence',peak_thresh,'MinPeakWidth',MinPeakW);
 state_str={'all' };
@@ -330,20 +225,13 @@ end
 session_length_sec(1)=max(all_dF.t);
 session_length_sec(2)=TRANGE(2);
 session_length_sec(3)=TRANGE(2);
-% activity parameters
-all_dF.delta_t_to_max=delta_t_to_max;
-all_dF.int_df_around_max=int_df_around_max;
-all_dF.int_df_last_half=int_df_last_half;
-all_dF.ratio_max_to_last=ratio_max_to_last;
-all_dF.ratio_max_to_min=ratio_max_to_min;
-all_dF.max_value=max_val;
-% peak analysis
+
+
 peak_analysis.state_str=state_str;
 peak_analysis.num_picks=num_picks;
 peak_analysis.session_length_sec=session_length_sec;
 peak_analysis.peaks_area=peaks_area;
 peak_analysis.peaks_height=peaks_height;
-
 all_dF.light_array=light_array;
 all_dF.peak_analysis=peak_analysis;
 all_dF.bins=bins;
@@ -409,6 +297,60 @@ if FIG
     ylabel('raw data','FontSize',12);
     
     
+    if FIGbinned
+        %% pick analysis figure
+        colors_bar=[0.8 0.8 0.8;0.1 0.1 0.1;1 1 0];
+        %% 10/4/18- I couldn't apply the colors through the text in Matlab- I opened the figure and changed it using matlab interface
+        figure
+        ph=subplot(1,2,1);
+        bh=bar(num_picks./session_length_sec);
+        ph.XTickLabel=state_str;
+        bh.CData=colors_bar;
+        %bh.FaceColor=colors_bar;
+        title('peaks/sec')
+        ph=subplot(1,2,2);
+        bh=bar(peaks_area);
+        ph.XTickLabel=state_str;
+        bh.CData=colors_bar;
+        title('Peaks area: prominance * width')
+        text(2,2,[files_name1 ' ,Min Peak=' num2str(MinPeakP)])
+        
+        %% PSTH
+        switch light_array.exp
+            case {'Ses','Sess','LD','LDold','DL','DLold'} %Light to Dark or Dark to light
+                figure
+                k=0;
+                for i=1:length(all_dF.all_binned_t_dark)
+                    if length(all_dF.all_binned_t_dark{i})>2
+                        k=k+1;
+                        subplot(length(all_dF.all_binned_t_dark),1,k)
+                        ph=bar(all_dF.all_binned_t_dark{i}(2:end),all_dF.dF_binnedpeaks_dark{i});
+                        set(ph,'Facecolor',[0.2 0.2 0.2])
+                        hold on
+                        ph=bar(all_dF.all_binned_t_light{i}(2:end),all_dF.dF_binnedpeaks_light{i});
+                        set(ph,'Facecolor',[1 1 0])
+                        hold on
+                        if i==1; title(files_name1); end
+                        xlim([0,XMAX]);
+                    end
+                end
+                
+                
+            case {'SessOnset'}
+                figure
+                for i=1:length(all_dF.dF_binned_peaks)
+                    subplot(length(bins),1,i)
+                    ph=bar(all_dF.all_binned_t{i}(2:end),all_dF.dF_binned_peaks{i});
+                    set(ph,'Facecolor',[1 1 0])
+                    hold on
+                    if i==1; title(files_name1); end
+                    xlim([600,XMAX+200]);
+                end
+                
+                
+        end
+    end
+  
 end
 
 end

@@ -21,7 +21,7 @@ for idi=1:length(mice)
             mouse_info.side='R';
             mouse_info.dates={ '100521'; '100721'; '101221';'010522'};%MMDDYY; 1;;'100621';'101121' 2 and 4 are noisy
             mouse_info.sessions=[1,3,5,7];%4,5
-        case '315L'% male- only 2 repeats- fiber was out 
+        case '315L'% male- only 2 repeats- fiber was out - not included
             mouse_info.side='L';
             mouse_info.dates={ '010322';'010422'};
             mouse_info.sessions=[1,2];% 
@@ -35,7 +35,7 @@ for idi=1:length(mice)
             mouse_info.sessions=[1 2 3];%
 
     end
-    %mouse_info.ID='286R'; mouse_info.side='R';% male
+   
     trial_info.rig='SynTDT';
     trial_info.n_onsets=4;% 4 for 2 sessions of light. 2 for 1 session of light on
     trial_info.show=0;

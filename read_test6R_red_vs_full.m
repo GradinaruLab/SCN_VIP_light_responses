@@ -3,7 +3,6 @@ function read_test6R_red_vs_full
 
 my_path='D:\DATA_Glab\fiberphotometry\TDT_test6R_red\';
 
-%ID='VIPGC60N'; side='R'; Gender='M'; rig='TDT';
 % white light  
 mouse_info{1}.ID='VIPGC60N';mouse_info{1}.side='R';mouse_info{1}.Gender='M'; mouse_info{1}.rig='TDT_test6R_red';;mouse_info{1}.date='111618';mouse_info{1}.Sname='test6R1';% 
 mouse_info{2}.ID='VIPGC246RL';mouse_info{2}.side='L';mouse_info{2}.Gender='F'; mouse_info{2}.rig='TDT_test6R_red';mouse_info{2}.date='101420';mouse_info{2}.Sname='test6R3';
@@ -19,7 +18,6 @@ mouse_info{9}.ID='VIPGC247RRL';mouse_info{9}.side='R';mouse_info{9}.Gender='F'; 
 mouse_info{10}.ID='VIPGC259R';mouse_info{10}.side='R';mouse_info{10}.Gender='F'; mouse_info{10}.rig='TDT_test6R_red';mouse_info{10}.date='101420';mouse_info{10}.Sname='test6Rred1';
 mouse_info{11}.ID='VIPGC260L';mouse_info{11}.side='L';mouse_info{11}.Gender='F'; mouse_info{11}.rig='TDT_test6R_red';mouse_info{11}.date='101420';mouse_info{11}.Sname='test6Rred1';
 mouse_info{12}.ID='VIPGC261RL';mouse_info{12}.side='R';mouse_info{12}.Gender='F'; mouse_info{12}.rig='TDT_test6R_red';mouse_info{12}.date='101420';mouse_info{12}.Sname='test6Rred1';
-
 
 
 for idi=1:length(mouse_info)

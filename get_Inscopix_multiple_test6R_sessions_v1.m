@@ -1,4 +1,4 @@
-function get_Inscopix_multiple_test6R_sessions
+function get_Inscopix_multiple_test6R_sessions_v1
 % go over samples with test6R experiemnt of Inscopix and get the cell
 % activity 
 % updated version: 12092021:
@@ -8,15 +8,6 @@ EXP='blue'
 trial_info.baseline_method=2; % mean activity  
     
 switch EXP
-    case 'opn4'
-        mouse_ID={'310L','264L'};
-        folder_name='SCNVIP_test6R_opn4antagonist';
-        trial_info.sess_num=1;
-        trial_info.estrus=[];
-        trial_info.fs=5; % Hz
-        trial_info.exp='test_6R_multiple';
-        analysis_params.peak_thresh=8;
-        trial_info.ROI_method='Ins';
     case 'blue'
         mouse_ID={'304RL','264L','303L','308R'};
         folder_name='SCNVIP_test6R_blue';
@@ -112,25 +103,4 @@ for i=1:N
 end
 
 
-% colculate correlation coefficien      
-corrc=0;
-if corrc
-    for i=1:N
-        load(['all_cell_df_sess' num2str(i)])
-        clear A
-        for ci=1:size(all_cell_dF,1)
-            A(:,:)=all_cell_dF(I2(ci),:,:);
-            %t(:,:)=all_cell_t(ci,:,:);
-            mean_dF_by_cell(ci,:)=nanmean(A,1);
-        end
-        for si1=1:size(mean_dF_by_cell,1)
-            for si2=1:size(mean_dF_by_cell,1)
-                cr2(si1,si2)=corr2(mean_dF_by_cell(si1,:),mean_dF_by_cell(si2,:));
-            end
-        end
-        figure
-        heatmap(cr2)
-        title(['Inscopix sess ' num2str(i)])
-    end
-end
 1

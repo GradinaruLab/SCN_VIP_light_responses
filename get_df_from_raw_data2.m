@@ -4,7 +4,7 @@ function [dF,t,all_dF]=get_df_from_raw_data2(all_dF,fs,NUMpar,t1,t2,TRANGE,time_
 %set parameters
 LFcut = 2; % cut-off frequency of lowpass filter
 order = 4; % N-th order for butterworth filter
-Zscore=NUMpar(1,6);%3;; 
+Zscore=NUMpar(1,6);%3;; % zero when amplitude is compared 
 Smth=1;
 %Smth=0; % 102121 check 
 Perc=NUMpar(1,5);%3;;
