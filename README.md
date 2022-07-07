@@ -24,11 +24,11 @@ get_compass_data_vip_paper
 my_circle_plot
 
 Figure 3 and 4: 
-read_test6R_FP_general
-get_exp_info_test6R_FP_v2
-FP_analysis_individual_test6R_with_params
-finds_light_status
-get_df_from_raw_data2
+read_test6R_FP_general;
+get_exp_info_test6R_FP_v2;
+FP_analysis_individual_test6R_with_params;
+finds_light_status;
+get_df_from_raw_data2;
 
 Figure 5: 
 get_Inscopix_test6R_sessions
