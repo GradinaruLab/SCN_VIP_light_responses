@@ -2,10 +2,10 @@ function read_test6R_FP_general
 % Fiber photomtery data test6R, FP
 % Aug 2021 
 if_zscore=0;
-experiment='blue_vs_red'
+%experiment='blue_vs_red'
+experiment='opn4_B'
 %experiment='opn4'
 [my_path,states,intensities,g_colors,styles2,Groups,mouse_info]=get_exp_info_test6R_FP(experiment);
-
 
 
 for idi=1:length(mouse_info)
@@ -24,9 +24,18 @@ for idi=1:length(mouse_info)
     max_values{idi}=data{idi}.max_value;
 end
 
+all_ID=[];
+all_sex=[];
+for idi=1:length(mouse_info)
+    all_ID{idi}= mouse_info{idi}.ID;
+    all_sex{idi}=mouse_info{idi}.Gender;
+end
+[i,f]=unique(all_ID)
+all_sex(f)
 %%% get mean values
 ind_end=853; dark_ind_end=300;
 %dark_ind_end=870;%870
+
 
 clear full_df
 for idi=1:length(mouse_info)
@@ -36,7 +45,10 @@ for idi=1:length(mouse_info)
     this_t=t{idi};
     figure
     plot(this_t,this_df)
+    
+    % take df and t for each event 
     event_ind1=intersect(find(this_t>light_array{idi}.light_on(1)-15),find(this_t<light_array{idi}.light_on(1)+30));
+    % 
     ttmp=this_t(event_ind1);
     %ttmp=ttmp(1:num_sec*fs{idi})-ttmp(1);
     repeats=length(light_array{idi}.light_on); 
@@ -62,7 +74,7 @@ for idi=1:length(mouse_info)
             tmp = (tmp - this_median)./this_mad; % normalization using robust z-score
             % all_dF = (all_dF - median(all_dF))./mad(baseline); % normalization using robust z-score    
         end
-        
+        % stuck all events to a matrix 
         all_test_dF=[all_test_dF tmp(1:ind_end)'];
     end
     full_df(idi,:,:)=all_test_dF;
@@ -149,7 +161,7 @@ end
 
 for idi1=1:size(all_y,1)
     A(:)=all_y(idi1,:);
-    for idi2=idi1:size(all_y,1)
+    for idi2=1:size(all_y,1)
         B(:)=all_y(idi2,:);
         cr2(idi2,idi1)=corr2(A,B);
     end
