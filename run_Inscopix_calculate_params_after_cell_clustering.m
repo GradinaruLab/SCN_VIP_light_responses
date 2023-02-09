@@ -4,7 +4,8 @@ function run_Inscopix_calculate_params_after_cell_clustering
 % parameters are calculated and presented 
 clear all_cell_dF all_cell_t
 
-mypath='C:\Users\Anat\Documents\Inscopix_Projects\SCNVIP_test6R_blue';
+%mypath='C:\Users\Anat\Documents\Inscopix_Projects\SCNVIP_test6R_blue';
+mypath='D:\DATA_Glab\Inscopix\Inscopix_Projects\SCNVIP_test6R_blue';
 n_clustering=2; % 2 used in paper
 baseline_method=2;% 2 used in paper
 individual_clustering=1; 
@@ -147,7 +148,7 @@ xlim([0.5 8.5])
 xticks(1:8)
 xticklabels({'all, consistant', 'all, changed','1-4, consistnat', '1-4, changed','1-3, consistnat', '1-3, changed','1-2, consistnat', '1-2, changed'})
 
-color_array=[0.5 0.5 0.5; 0.7 0.7 0.7];
+color_array=[0.8 0.8 0.8; 0.6 0.6 0.6];% cluster 1 - light gray. cluster 2 - dark gray
 figure
 y = [n nc; n12 nc12; n13 nc13; n14 nc14];
 b=bar(y,'stacked','FaceColor','flat');

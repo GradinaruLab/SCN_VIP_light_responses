@@ -14,6 +14,7 @@ Ppath='D:\Data_Glab\fiberphotometry\';
 par_file_name='ParametersFP';
 [NUMpar,TXTpar,RAWpar]=xlsread([Ppath par_file_name '.xlsx']);
 rel=NUMpar(1,7); % if peak analysis 'MinPeak' is relative to specific trial
+%rel=1; % if peak analysis 'MinPeak' is relative to specific trial
 interval=NUMpar(1,1);
 bins=NUMpar(:,2)';%[2,5,10,20,30]; %time in minutes
 FIGbinned=0;
@@ -23,17 +24,23 @@ if nargin == 0
     
     my_path='D:\Data_Glab\fiberphotometry\TDT_test6R_red\';
     my_path='D:\DATA_Glab\fiberphotometry\TDT_test6R_opn4_antagonist\';
+    my_path='D:\Data_Glab\fiberphotometry\TDT_test6R_l_vs_r\';
     
     FIG=1;
+    FIGbinned=1;
     %ID='VIPGC60N'; side='R'; Gender='M'; rig='TDT';
     % mouse_info.ID='VIPGC246RL';mouse_info.side='R';mouse_info.Gender='F'; mouse_info.rig='TDT_test6R_red';
    % mouse_info.ID='VIPGC262R';mouse_info.side='R';mouse_info.Gender='M'; mouse_info.rig='TDT_test6R_red';
    % mouse_info.ID='VIPGC286R';mouse_info.side='R';mouse_info.Gender='M'; mouse_info.rig='TDT_test6R_red';
     
-    mouse_info.ID='VIPGC288RL';mouse_info.side='R';mouse_info.Gender='M'; mouse_info.rig='TDT_test6R_red';
+   % mouse_info.ID='VIPGC288RL';mouse_info.side='R';mouse_info.Gender='M'; mouse_info.rig='TDT_test6R_red';
     %mouse_info.ID='VIPGC296R';mouse_info.side='R';mouse_info.Gender='M'; mouse_info.rig='TDT_test6R_red';
     % mouse_info.ID='VIPGC298L';mouse_info.side='R';mouse_info.Gender='F'; mouse_info.rig='TDT_test6R_red';
-    
+     %  mouse_info.ID='VIPGC313RL';mouse_info.side='L';mouse_info.Gender='M'; mouse_info.rig='TDT_test6R_red';
+    mouse_info.ID='VIPGC318L';mouse_info.side='R';mouse_info.Gender='M'; mouse_info.rig='TDT_test6R_red';
+      mouse_info.ID='VIPGC349R';mouse_info.side='L';mouse_info.Gender='M'; mouse_info.rig='TDT_test6R_red';
+  %  mouse_info.ID='VIPGC371R';mouse_info.side='R';mouse_info.Gender='M'; mouse_info.rig='TDT_test6R_red';
+ 
     %  mouse_info.ID='VIPGC247RRL';mouse_info.side='R';mouse_info.Gender='F'; mouse_info.rig='TDT_test6R_red';
     %    mouse_info.ID='259R'; mouse_info.side='R';
     %  mouse_info.ID='260L'; mouse_info.side='L';
@@ -45,11 +52,14 @@ if nargin == 0
     mouse_info.date='020221'; mouse_info.Sname='test6R3';
 
      mouse_info.date='101421'; mouse_info.Sname='test6R11';
+     mouse_info.date='060222'; mouse_info.Sname='test6R1_438';
+    % mouse_info.date='101022'; mouse_info.Sname='test6R2_650';
+     mouse_info.date='101022'; mouse_info.Sname='test6R1_438';
 end
 
 % set more parameters
 if strfind(mouse_info.Sname,'test')
-    Zscore=0; testYLIM=15;
+    Zscore=0; testYLIM=16.5;
     NUMpar(1,6)=0;
 elseif strfind(mouse_info.Sname,'Lumencore')
     Zscore=0;
@@ -159,7 +169,7 @@ all_dF.fit400_original=interp1(t_original,all_dF.fit400_original,[1:0.05:t_origi
 if rel==1
     % remove high amplitude points. based on https://www.ncbi.nlm.nih.gov/pmc/articles/PMC5729554/
     Y=remove_high_amplitute_points(all_dF.dF,all_dF.t,Perc);
-    peak_thresh=MinPeakP*median(Y(find(~isnan(Y))));
+    peak_thresh=1*median(Y(find(~isnan(Y))));
 elseif rel==0
     peak_thresh=MinPeakP;
 end
@@ -204,6 +214,8 @@ plot([light_array.light_off light_array.light_off],[-0.2 max(all_dF.dF)],'b'); h
 plot([light_array.light_on light_array.light_on],[-0.2 max(all_dF.dF)],'r'); hold on
 
 individual_response_figure=0;
+new_t=[];
+new_dF=[];
 for i=1:length(light_array.light_on)
     
     sec5_ind=max(find(all_dF.t<=5));
@@ -265,16 +277,23 @@ for i=1:length(light_array.light_on)
         plot(all_dF.t(inds),all_dF.dF(inds)); hold on
         plot([all_dF.t(inds(1)+max_ind) all_dF.t(inds(1)+max_ind)],[-0.2 max(all_dF.dF)],'r'); hold on
     end
+    new_inds=(inds(1)-length(inds)/2):(inds(end)+length(inds)/2);
+    new_t=[new_t all_dF.t(new_inds)];
+    new_dF=[new_dF all_dF.dF(new_inds)];
 end
 
-[pks{1},locs{1},w{1},p{1}]=findpeaks(all_dF.dF,all_dF.t,'Annotate','extents','WidthReference','halfheight','MinPeakProminence',peak_thresh,'MinPeakWidth',MinPeakW);
+%[pks{1},locs{1},w{1},p{1}]=findpeaks(all_dF.dF,all_dF.t,'Annotate','extents','WidthReference','halfheight','MinPeakProminence',peak_thresh,'MinPeakWidth',MinPeakW);
+[pks{1},locs{1},w{1},p{1}]=findpeaks(new_dF,new_t,'Annotate','extents','WidthReference','halfheight','MinPeakProminence',peak_thresh,'MinPeakWidth',MinPeakW);
+
 state_str={'all' };
+
 
 
 for pi=1:length(state_str)
     num_picks(pi)=length(pks{pi});
     peaks_area(pi)=sum(w{pi}.*p{pi});
     peaks_height(pi)=mean(p{pi});
+    peaks_width(pi)=mean(w{pi});
 end
 
 
@@ -284,27 +303,32 @@ if FIGbinned
     event_ind1=intersect(find(all_dF.t>light_array.light_on(1)-15),find(all_dF.t<light_array.light_on(1)+30));
     ttmp=all_dF.t(event_ind1);
     num_sec=34;
-    % num_sec=39;
-    num_sec=42;
+   %  num_sec=39;
+   % num_sec=42;
     % ttmp=ttmp(1:42*fs)-ttmp(1);
-    ttmp=ttmp(1:num_sec*fs)-ttmp(1);
+   
+   % ttmp=ttmp(1:num_sec*fs)-ttmp(1);
     figure %('name',ID)
     for ti=1:length(light_array.light_on)
         event_ind=intersect(find(all_dF.t>light_array.light_on(ti)-15),find(all_dF.t<light_array.light_on(ti)+30));
         tmp=all_dF.dF(event_ind);
         %all_test_dF=[all_test_dF tmp(1:42*fs)'];
-        all_test_dF=[all_test_dF tmp(1:num_sec*fs)'];
+       % all_test_dF=[all_test_dF tmp(1:num_sec*fs)'];
+        all_test_dF=[all_test_dF tmp'];
         %plot(ttmp,tmp(1:42*fs),'linewidth',2)
-        plot(ttmp,tmp(1:num_sec*fs),'linewidth',2)
+       % plot(ttmp,tmp(1:num_sec*fs),'linewidth',2)
+        plot(ttmp,tmp,'linewidth',2)
         hold on
     end
     plot(ttmp, mean(all_test_dF'),'-k','linewidth',4)
     xlabel('time (sec)')
     ylabel ('% dF/F')
-    ylim([0 testYLIM])
-    xlim([0 num_sec])
+    title([mouse_info.ID ' ' num2str(mouse_info.date) ' ' mouse_info.Sname])
+   
+    ylim([-0.5 testYLIM])
+    xlim([0+ttmp(1) 45+ttmp(1)])
     
-    figure ('name',ID)
+    figure %('name',ID)
     lo = mean(all_test_dF') - std(all_test_dF')/sqrt(size(all_test_dF,2));
     hi = mean(all_test_dF') + std(all_test_dF')/sqrt(size(all_test_dF,2));
     y=mean(all_test_dF');
@@ -322,8 +346,9 @@ if FIGbinned
     set(hl, 'color', 'r', 'marker', 'x');
     xlabel('time (sec)')
     ylabel ('% dF/F')
-    ylim([0 testYLIM])
-    xlim([0 num_sec])
+    ylim([-0.5 testYLIM])
+     xlim([0+ttmp(1) 45+ttmp(1)])
+     title([mouse_info.ID ' ' num2str(mouse_info.date) ' ' mouse_info.Sname])
 end
 
 
@@ -343,6 +368,7 @@ peak_analysis.num_picks=num_picks;
 peak_analysis.session_length_sec=session_length_sec;
 peak_analysis.peaks_area=peaks_area;
 peak_analysis.peaks_height=peaks_height;
+peak_analysis.peaks_width=peaks_width;
 
 all_dF.light_array=light_array;
 all_dF.peak_analysis=peak_analysis;
@@ -367,7 +393,7 @@ if FIG
     figure
     subplot (2,1,1)
     %findpeaks(all_dF.dF,all_dF.t,'Annotate','extents','WidthReference','halfheight','MinPeakProminence',MinPeakP,'MinPeakWidth',MinPeakW)
-    findpeaks(all_dF.dF,all_dF.t,'Annotate','extents','MinPeakProminence',peak_thresh);
+    findpeaks(new_dF,new_t,'Annotate','extents','MinPeakProminence',peak_thresh);
     hold on
     % plot(all_dF(k,i).t,all_dF(k,i).dF)
     hold on
@@ -383,7 +409,7 @@ if FIG
             lh=line([TRANGE(2) max(all_dF.t)],[20,20]);
             set(lh,'color','y','LineWidth',10)
     end
-    ylim([-5,15]);
+    ylim([-5,30]);
     xlim([0,XMAX]);
     %  xlim([3600,10800]);
     title([files_name1 ' ,Min Peak=' num2str(MinPeakP)])

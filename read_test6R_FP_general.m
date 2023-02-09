@@ -1,9 +1,12 @@
 function read_test6R_FP_general
 % Fiber photomtery data test6R, FP
 % Aug 2021 
-if_zscore=0;
+title_ad=[];
+if_zscore=0; 
+if if_zscore; title_ad='(z-score)'; end
 %experiment='blue_vs_red'
 experiment='opn4_B'
+
 %experiment='opn4'
 [my_path,states,intensities,g_colors,styles2,Groups,mouse_info]=get_exp_info_test6R_FP(experiment);
 
@@ -22,6 +25,7 @@ for idi=1:length(mouse_info)
     ratio_max_to_last{idi}=data{idi}.ratio_max_to_last;
     ratio_max_to_min{idi}=data{idi}.ratio_max_to_min;
     max_values{idi}=data{idi}.max_value;
+    disp([mouse_info{idi}.ID ' ' num2str(mouse_info{idi}.date) ' ' mouse_info{idi}.Sname])
 end
 
 all_ID=[];
@@ -115,6 +119,9 @@ for idi=1:length(mouse_info)
     mean_max_values(idi)=mean( max_values{idi});
     sem_max_values(idi)=std( max_values{idi})/sqrt(length( max_values{idi}));
  
+        mean_num_peaks(idi)=peak_analysis{idi}.num_picks;
+        mean_peak_width(idi)=peak_analysis{idi}.peaks_width;
+   % sem_max_values(idi)=std( max_values{idi})/sqrt(length( max_values{idi}));
 end
 
 
@@ -144,7 +151,7 @@ end
 
 %% calculate correlation coefficien
 all_y=[];
-clear cr2 c_label_states
+clear cr2 c_label_states A B
 lb1=0;
 %for gi=[1:5 7:length(Groups)] % skip the low intensity red 
 for gi=[1:length(Groups)] % skip the low intensity red 
@@ -153,7 +160,11 @@ for gi=[1:length(Groups)] % skip the low intensity red
     y=nanmean(mean(full_df(Groups{gi},:,:),3));
     %y=y-mean(y(1:200));
     y=(y-median(y(1:200)))/mad(y); % remove baseline ( before light is turned on) and z-scores- to compare shape 
-
+    % take only the response part
+    figure; plot(y)
+    L=ceil(length(y)/4);
+    y=y(325:675);
+  % figure; plot(y)
     all_y=[all_y; y];
     c_label_states{lb1}=states{gi};
     end
@@ -170,6 +181,7 @@ end
 map='gray';
 corr_plot(cr2,c_label_states,map)
 
+my_matvisual(cr2(end:-1:1,:),'annotation',c_label_states)
 % now plot
 plot_each_condition=0;
 if plot_each_condition
@@ -183,9 +195,10 @@ if plot_each_condition
 end
 
 figure;
+dim2=4;
 t2=ttmp-ttmp(1);
 for gi=1:length(Groups)
-    subplot(3,6,gi)
+    subplot(3,dim2,gi)
     % for idi=1:6
     %     ph=plot(t(1:ind_end),mean(full_df(idi,:,:),3)); hold on
     %     ph.Color=[0.5 0.5 0.5];
@@ -199,17 +212,17 @@ for gi=1:length(Groups)
 %         figure_params.background='r';figure_params.line='k';
 %     end
     plot_curve_with_SEM(t2(1:ind_end),y,SEM,figure_params)
-    ylim([-0.5 12])
-    xlim([0 45])
+    ylim([-0.25 25]) % dF/F
+    xlim([0 45]) % time
     xlabel('Time (sec)')
-    ylabel('dF/F (z-score)')
+    ylabel(['dF/F ' title_ad])
     title (states{gi})
 end
 
 %figure
 k=gi
 % compare features: 
-subplot(3,6,k+1)
+subplot(3,dim2,k+1)
 for gi=1:ceil(length(Groups)/2)
     y=nanmean(mean(full_df(Groups{gi},:,:),3));
     y=y-mean(y(1:200)); % remove baseline ( before light is turned on)
@@ -223,7 +236,7 @@ legend(states{1:ceil(length(Groups)/2)})
 
 % compare features: 
 
-subplot(3,6,k+2)
+subplot(3,dim2,k+2)
 for gi=ceil(length(Groups)/2)+1:length(Groups)
     y=nanmean(mean(full_df(Groups{gi},:,:),3));
     y=y-mean(y(1:200)); % remove baseline ( before light is turned on)
@@ -290,14 +303,14 @@ xlabel('Log10 (photon/cm^2/sec)')
 ylabel('dF/F Peak difference (second to third, median+- sem)')
 set(gca, 'XDir','reverse')
 
-traits_to_plot={'Mean AUC','Max amplitude (a.u.)', 'Rise time (sec)', 'Exponent decay constant (sec-1)','Max/min ratio'};% 
+traits_to_plot={'Mean Peak width (a.u.)','Mean num of Peak (a.u.)','Mean AUC','Max amplitude (a.u.)', 'Rise time (sec)', 'Exponent decay constant (sec-1)','Max/min ratio'};% 
 for ti=1:length(traits_to_plot)
     k=k+1;
     clear y sem_y
     subplot(3,3,k)
     for gi=1:length(Groups)
         clear all_y sem_y
-        ylim_array=[]
+        ylim_array=[];
         switch traits_to_plot{ti}
             case 'Mean AUC'
                 all_y=all_mean_df(Groups{gi});
@@ -310,6 +323,10 @@ for ti=1:length(traits_to_plot)
                  all_y=mean_ratio_max_to_min(Groups{gi});
             case 'Max amplitude (a.u.)'
                 all_y=mean_max_values(Groups{gi});
+            case 'Mean num of Peak (a.u.)'
+                all_y=mean_num_peaks(Groups{gi});
+            case 'Mean Peak width (a.u.)'
+                all_y=mean_peak_width(Groups{gi});
         end
         y(gi)=mean(all_y);
         sem_y(gi)=std(all_y)/sqrt(length(Groups{gi}));
@@ -330,9 +347,10 @@ end
 
 
 % boxplot figure
+dim2=3;
 figure
 k=0;
-subplot(3,3,k+1)
+subplot(3,dim2,k+1)
 % arrange data for boxplot, Mean AUC
 g=[]; x=[]; 
 for gi=1:length(Groups)
@@ -345,12 +363,13 @@ boxplot(x,g, ...
     'Labels', states, ...
      'Colors',[0 0 0],'PlotStyle','compact'); 
 
-ylim([0 2500])
+ylim([0 8000])
+%ylim([0 800])
 xlim([0.5 length(Groups)+0.5])
 ylabel('Mean AUC (full)')
 
 
-subplot(3,3,k+2)
+subplot(3,dim2,k+2)
 % arrange data for boxplot
 g=[]; x=[]; 
 for gi=1:length(Groups)
@@ -360,11 +379,11 @@ end
 boxplot(x,g, ...
     'Labels', states, ...
      'Colors',[0 0 0],'PlotStyle','compact'); 
-ylim([0 800])
+ylim([0 2000])
 xlim([0.5 length(Groups)+0.5])
 ylabel('Mean AUC around peak')
 
-subplot(3,3,k+3)
+subplot(3,dim2,k+3)
 % arrange data for boxplot
 g=[]; x=[]; 
 for gi=1:length(Groups)
@@ -374,12 +393,12 @@ end
 boxplot(x,g, ...
     'Labels', states, ...
      'Colors',[0 0 0],'PlotStyle','compact'); 
-ylim([0 800])
+ylim([0 3500])
 xlim([0.5 length(Groups)+0.5])
 ylabel('Mean AUC second half light')
 
 % plot time to peak 
-subplot(3,3,k+4)
+subplot(3,dim2,k+4)
 % arrange data for boxplot
 g=[]; x=[]; 
 for gi=1:length(Groups)
@@ -391,12 +410,12 @@ end
 boxplot(x,g, ...
     'Labels', states, ...
      'Colors',[0 0 0],'PlotStyle','compact'); 
-ylim([0 11])
+ylim([0 13])
 xlim([0.5 length(Groups)+0.5])
 ylabel('Time to peak (sec)')
 
 % plot decay times
-subplot(3,3,k+5)
+subplot(3,dim2,k+5)
 % arrange data for boxplot
 g=[]; x=[]; 
 for gi=1:length(Groups)
@@ -414,7 +433,7 @@ ylabel('Exponent decay constant (sec-1)')
 
 
 % plot ratio peak to response end integrals (over 4 seconds)
-subplot(3,3,k+6)
+subplot(3,dim2,k+6)
 % arrange data for boxplot
 g=[]; x=[]; 
 for gi=1:length(Groups)
@@ -426,14 +445,14 @@ end
 boxplot(x,g, ...
     'Labels', states, ...
      'Colors',[0 0 0],'PlotStyle','compact'); 
-ylim([1 4.5])
+ylim([1 3.5])
 xlim([0.5 length(Groups)+0.5])
 ylabel('Ratio peak/last (int. 4 seconds)')
 
 
 % arrange data for boxplot, peak values (this should be displayed only at
 % if_zscore=0
-subplot(3,3,k+7)
+subplot(3,dim2,k+7)
 g=[]; x=[]; 
 for gi=1:length(Groups)
     x=[x mean_max_values(Groups{gi})];
@@ -446,20 +465,57 @@ boxplot(x,g, ...
     'Labels', states, ...
      'Colors',[0 0 0],'PlotStyle','compact'); 
 
-ylim([0 20])
+ylim([0 50])
 xlim([0.5 length(Groups)+0.5])
 ylabel('Max amplitude (a.u.)')
 
 
+% arrange data for boxplot, peak values (this should be displayed only at
+% if_zscore=0
+subplot(3,dim2,k+8)
+g=[]; x=[]; 
+for gi=1:length(Groups)
+    x=[x mean_num_peaks(Groups{gi})];
+    g=[g gi*ones(1,length(Groups{gi}))];
+        mean_df(gi)=mean(mean_num_peaks(Groups{gi}));
+    sem_df(gi)=std(mean_num_peaks(Groups{gi}))/sqrt(length(Groups{gi}));
+
+end
+boxplot(x,g, ...
+    'Labels', states, ...
+     'Colors',[0 0 0],'PlotStyle','compact'); 
+
+ylim([0 12])
+xlim([0.5 length(Groups)+0.5])
+ylabel('Mean number of peaks (a.u.)')
+
+% arrange data for boxplot, peak values (this should be displayed only at
+% if_zscore=0
+subplot(3,dim2,k+9)
+g=[]; x=[]; 
+for gi=1:length(Groups)
+    x=[x mean_peak_width(Groups{gi})];
+    g=[g gi*ones(1,length(Groups{gi}))];
+        mean_df(gi)=mean(mean_peak_width(Groups{gi}));
+    sem_df(gi)=std(mean_peak_width(Groups{gi}))/sqrt(length(Groups{gi}));
+
+end
+boxplot(x,g, ...
+    'Labels', states, ...
+     'Colors',[0 0 0],'PlotStyle','compact'); 
+
+ylim([0 20])
+xlim([0.5 length(Groups)+0.5])
+ylabel('Mean width of peaks (a.u.)')
 
 %% statistical tests: 
 % check normality with one sample Kolmogorov-Smirnov test. h=1 means that
 % the distribution is NOT normal 
-traits_to_check={'mean_max_values' 'all_mean_df','mean_delta_t_to_max', 'tau','diff_y2_1_to_2','mean_ratio_max_to_last'};
+traits_to_check={'mean_peak_width','mean_num_peaks', 'mean_max_values' 'all_mean_df','mean_delta_t_to_max', 'tau','diff_y2_1_to_2','mean_ratio_max_to_last'};
 for pi=1:length(traits_to_check)
     eval(['data_to_test =' traits_to_check{pi} ';']);
     switch traits_to_check{pi}
-        case {'mean_max_values','mean_delta_t_to_max','all_mean_df','mean_ratio_max_to_last'}
+        case {'mean_peak_width','mean_num_peaks','mean_max_values','mean_delta_t_to_max','all_mean_df','mean_ratio_max_to_last'}
             g=[]; x=[];
             for gi=1:length(Groups)
                 x=[x data_to_test(Groups{gi})];
@@ -486,7 +542,8 @@ for pi=1:length(traits_to_check)
        c2{pi} = multcompare(stats,'CType','hsd');% Tukey's honest significant difference criterion correction 
         c3{pi} = multcompare(stats,'CType','dunn-sidak');
         % bonferroni correction
-
+        %index relate to: 
+        %traits_to_check
     %end
 end
     1

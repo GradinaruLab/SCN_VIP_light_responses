@@ -1,77 +1,110 @@
 function  analysis= Inscopix_calculate_params_after_cell_clustering (cluster_data)
-% Light response paper Nov 2021
+% Light response paper Jan 2023
 % after test6R single cell data is clustered (Pegah Kassraian), some
 % parameters are calculated and presented 
+% used for all inscopix data (white light, blue light with different
+% intensities, before and after opn4 antagonist)
 
+fs=5; % 5 Hz sampling rate 
 if nargin==0
     clear all_cell_dF all_cell_t
+    all=[];
     baseline_method=2;
     n_clustering=3;
-    
+    approach=2;
 %     baseline_method=1;
 %     n_clustering=2;
 %     
 %     baseline_method=2;
 %     n_clustering=2;
     % this is the white light experiemnt, 118 cells
-    mypath='C:\Users\Anat\Documents\Inscopix_Projects\SCNVIP_test6R\Analysis_after_clustering';
+  % mypath='C:\Users\Anat\Documents\Inscopix_Projects\SCNVIP_test6R\Analysis_after_clustering';
+    %mypath='D:\DATA_Glab\Inscopix\Inscopix_Projects\SCNVIP_test6R\Analysis_after_clustering';
+    mypath='D:\DATA_Glab\Inscopix\Inscopix_Projects\SCNVIP_test6R_for6h_sess\';
     cd (mypath)
     
-      %% those are the results for 3 clusters, B2, first session only (122 cells) 
-    if baseline_method==2 && n_clustering==3
-        clustering=[2, 0, 1, 1, 0, 2, 1, 2, 0, 0, 1, 1, 1, 0, 0, 2, 1, 0, 2, 0, 0, 0,...
-            0, 2, 2, 0, 0, 2, 1, 0, 1, 0, 0, 1, 0, 1, 0, 1, 1, 2, 0, 2, 2, 0,...
-            1, 1, 0, 1, 1, 2, 2, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,...
-            1, 1, 1, 1, 1, 2, 2, 0, 2, 2, 2, 1, 0, 2, 2, 2, 2, 0, 2, 0, 1, 2,...
-            0, 2, 2, 2, 2, 0, 0, 0, 2, 1, 0, 2, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2,...
-            1, 2, 2, 2, 1, 2, 1, 1];
+    %% those are the results for 3 clusters, B2, first session only (122 cells)
+    if baseline_method==2 && n_clustering==3 && approach==1
+        %         clustering=[2, 0, 1, 1, 0, 2, 1, 2, 0, 0, 1, 1, 1, 0, 0, 2, 1, 0, 2, 0, 0, 0,...
+        %             0, 2, 2, 0, 0, 2, 1, 0, 1, 0, 0, 1, 0, 1, 0, 1, 1, 2, 0, 2, 2, 0,...
+        %             1, 1, 0, 1, 1, 2, 2, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,...
+        %             1, 1, 1, 1, 1, 2, 2, 0, 2, 2, 2, 1, 0, 2, 2, 2, 2, 0, 2, 0, 1, 2,...
+        %             0, 2, 2, 2, 2, 0, 0, 0, 2, 1, 0, 2, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2,...
+        %             1, 2, 2, 2, 1, 2, 1, 1];
+        %
         
+        clustering=[1, 0, 2, 2, 0, 1, 2, 0, 0, 0, 2, 2, 2, 2, 0, 1, 2, 2, 1, 0, 0, 0,...
+            0, 0, 0, 0, 0, 0, 1, 2, 2, 0, 0, 1, 0, 2, 0, 2, 2, 0, 0, 0, 0, 0,...
+            2, 2, 0, 2, 2, 1, 0, 0, 2, 2, 2, 2, 2, 2, 2, 2, 2, 1, 2, 2, 2, 2,...
+            2, 2, 2, 2, 2, 0, 0, 0, 1, 1, 1, 1, 2, 0, 0, 1, 0, 0, 0, 0, 2, 0,...
+            0, 2, 1, 2, 0, 0, 0, 0, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 2, 2, 1, 1,...
+            1, 1, 1, 1, 1, 1, 2, 2];
+        % now load
+        load('all_cell_df_B2');
+        load('all_cell_t_B')
+        %all_cell_t=10*all_cell_t;
+        clustering_order=[2,3,1];
+    end
+    % new clustering with Alex , Gaussian, seed=0
+    if baseline_method==2 && n_clustering==3 && approach==2
+        clustering=[0, 0, 0, 1, 2, 0, 2, 0, 1, 2, 2, 2, 0, 0, 0, 1, 1, 0, 1, 0, 0, 1,...
+            2, 0, 2, 2, 2, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,...
+            0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0, 1, 0, 0, 2, 0, 0, 1,...
+            1, 0, 1, 0, 1, 1, 0, 1, 1, 0, 0, 0, 1, 1, 0, 0, 0, 1, 1, 1, 1, 1,...
+            1, 1, 1, 1, 1, 0, 0, 1, 1, 0, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 2,...
+            2, 1, 2, 2, 2, 2, 2, 2, 0, 2, 2, 1, 2, 1, 2, 1, 2, 2, 2, 2, 0, 1,...
+            1, 1, 2, 1, 1, 1, 2, 2, 2, 0, 2, 2, 0, 2, 1, 2, 2, 2, 1, 0, 2, 1,...
+            2];
+        %cd('Figure5')
+        %                 load('all_cell_df');
+        %         load('all_cell_t')
+        % all_cell_t=10*all_cell_t;
+        % cd('SCNVIP_test6R_for6h_sess')
         
-       clustering=[1, 0, 2, 2, 0, 1, 2, 0, 0, 0, 2, 2, 2, 2, 0, 1, 2, 2, 1, 0, 0, 0,...
-       0, 0, 0, 0, 0, 0, 1, 2, 2, 0, 0, 1, 0, 2, 0, 2, 2, 0, 0, 0, 0, 0,...
-       2, 2, 0, 2, 2, 1, 0, 0, 2, 2, 2, 2, 2, 2, 2, 2, 2, 1, 2, 2, 2, 2,...
-       2, 2, 2, 2, 2, 0, 0, 0, 1, 1, 1, 1, 2, 0, 0, 1, 0, 0, 0, 0, 2, 0,...
-       0, 2, 1, 2, 0, 0, 0, 0, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 2, 2, 1, 1,...
-       1, 1, 1, 1, 1, 1, 2, 2];
+        % now load
+        load('all_cell_df_B2');
+        load('all_cell_t_B')
+        %all_cell_t=10*all_cell_t;
+        clustering_order=[2,1,3];
+    end
+    if baseline_method==2 && n_clustering==4 && approach==2 %(approach 2 is with Alex, 155 cells)
+        clustering=[1, 1, 2, 2, 0, 1, 0, 1, 2, 1, 0, 0, 1, 1, 1, 2, 2, 1, 2, 0, 1, 2,...
+            3, 1, 3, 0, 3, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,...
+            1, 1, 1, 1, 1, 2, 1, 2, 1, 1, 2, 2, 3, 2, 1, 2, 1, 1, 3, 2, 1, 2,...
+            2, 1, 2, 2, 2, 2, 3, 2, 2, 1, 2, 2, 2, 2, 2, 1, 2, 3, 3, 2, 2, 2,...
+            2, 2, 2, 2, 2, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 2, 3,...
+            0, 2, 0, 1, 0, 0, 0, 0, 1, 0, 0, 3, 0, 2, 0, 2, 3, 0, 0, 0, 3, 2,...
+            2, 2, 0, 2, 2, 2, 0, 0, 0, 1, 0, 0, 1, 0, 2, 0, 0, 0, 3, 1, 0, 2,...
+            0];
+        % now load
+        load('all_cell_df_B2');
+        load('all_cell_t_B')
+        %all_cell_t=10*all_cell_t;
+        clustering_order=[1:4];
+    end
+  
+    if baseline_method==2 && n_clustering==2 && approach==1
+%         clustering=[0, 1, 0, 0, 1, 0, 0, 1, 1, 1, 0, 0, 0, 0, 1, 0, 0, 1, 0, 1, 1, 1,...
+%             1, 1, 1, 1, 1, 1, 0, 1, 0, 1, 1, 0, 1, 0, 1, 0, 0, 1, 1, 1, 1, 1,...
+%             0, 0, 1, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,...
+%             0, 0, 0, 0, 0, 1, 1, 1, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1,...
+%             1, 0, 0, 0, 1, 1, 1, 1, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,...
+%             0, 0, 1, 0, 0, 0, 0, 0];
+        clustering= [0, 1, 0, 0, 1, 0, 0, 1, 1, 1, 0, 0, 0, 1, 1, 0, 0, 1, 0, 1, 1, 1,...
+            1, 1, 1, 1, 1, 1, 0, 1, 0, 1, 1, 0, 1, 0, 1, 0, 0, 1, 1, 1, 1, 1,...
+            0, 0, 1, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,...
+            0, 0, 0, 0, 0, 1, 1, 1, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1,...
+            1, 0, 0, 0, 1, 1, 1, 1, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,...
+            0, 0, 0, 0, 0, 0, 0, 0];
+        
         cd('Figure5')
         % now load
         load('all_cell_df');
         load('all_cell_t')
         all_cell_t=10*all_cell_t;
-        clustering_order=[1,3,2];
-    end
-    if baseline_method==1 && n_clustering==2
-        % those are the results for 2 clusters, B1, all white (189 cells)
-        clustering=[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,...
-            0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1,...
-            0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 1, 0, 1, 0, 0, 0, 0, 0,...
-            0, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,...
-            0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1,...
-            0, 1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 1, 0, 0, 0, 1,...
-            0, 0, 0, 1, 1, 1, 0, 0, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1,...
-            0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,...
-            0, 0, 0, 0];% B1
-                %now load
-        load('all_cell_df_all_white_B1');  all_cell_dF=all_cell_df;
-        load('all_cell_t_all_white_B1')
         clustering_order=[1,2,3];
+    end
     
-    end
-    if baseline_method==2 && n_clustering==2
-        clustering=[0, 1, 0, 0, 1, 0, 0, 1, 1, 1, 0, 0, 0, 0, 1, 0, 0, 1, 0, 1, 1, 1,...
-            1, 1, 1, 1, 1, 1, 0, 1, 0, 1, 1, 0, 1, 0, 1, 0, 0, 1, 1, 1, 1, 1,...
-            0, 0, 1, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,...
-            0, 0, 0, 0, 0, 1, 1, 1, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1,...
-            1, 0, 0, 0, 1, 1, 1, 1, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,...
-            0, 0, 1, 0, 0, 0, 0, 0];
-            cd('Figure5')
-        % now load
-        load('all_cell_df');
-        load('all_cell_t')
-        all_cell_t=10*all_cell_t;
-    clustering_order=[1,2,3];
-    end
-
     cluster_session_ind=[];
     
 else
@@ -83,11 +116,12 @@ else
     clustering_order=cluster_data.cluster_order;
     baseline_method=cluster_data.baseline_method;
     n_clustering=cluster_data.n_clustering;
+    all=cluster_data.all;
 end
 
 
-if exist (['all_tau' num2str(cluster_session_ind) '_B' num2str(baseline_method) '_n' num2str(n_clustering) '.mat'])
-    load(['all_tau' num2str(cluster_session_ind) '_B' num2str(baseline_method) '_n' num2str(n_clustering) '.mat'])
+if exist (['all_tau' num2str(cluster_session_ind) all '_B' num2str(baseline_method) '_n' num2str(n_clustering) '.mat'])
+    load(['all_tau' num2str(cluster_session_ind) all '_B' num2str(baseline_method) '_n' num2str(n_clustering) '.mat'])
     new_tau=0;
 else
     new_tau=1;
@@ -103,13 +137,23 @@ end
 
 cluster_ind{clustering_order(1)}=find(clustering==0);
 cluster_ind{clustering_order(2)}=find(clustering==1);
-if n_clustering==3
+if n_clustering>2
     cluster_ind{clustering_order(3)}=find(clustering==2);
 end
 
-cluster_color(1,:)=[0.7 0.7 0.7];
-cluster_color(2,:)=[0.5 0.5 0.5];
-cluster_color(3,:)=[0.3 0.3 0.3];
+cluster_color(1,:)=[0.8 0.8 0.8];% light gray
+cluster_color(2,:)=[0.6 0.6 0.6];% darker gray
+
+if n_clustering>2
+    cluster_ind{clustering_order(3)}=find(clustering==2);
+    cluster_color(3,:)=[0.4 0.4 0.4];
+end
+if n_clustering>3
+    cluster_ind{clustering_order(4)}=find(clustering==3);
+    cluster_color(4,:)=[0.2 0.2 0.2];
+end
+
+
 
 % if isempty(cluster_session_ind)
 %     all_cell_t=10*all_cell_t; % I have to check what caused this mistake
@@ -119,8 +163,9 @@ cluster_color(3,:)=[0.3 0.3 0.3];
 MAXY=max(max(max(all_cell_dF)));
 figure
 for ci=1:length(cluster_ind)
-    subplot(1,length(cluster_ind),ci)
-    this_cluster_ind=cluster_ind{ci};
+    k=clustering_order(ci);
+    subplot(1,length(cluster_ind),k)
+    this_cluster_ind=cluster_ind{k};
     for i=1:length(this_cluster_ind)        
         T(:)=all_cell_t(this_cluster_ind(i),1,:);
         dF(:)=nanmean(all_cell_dF(this_cluster_ind(i),:,:),2);
@@ -136,22 +181,28 @@ if_norm=[0 1];
 for spi=1:2
     subplot(1,2,spi)
     for ci=1:length(cluster_ind)
+        clear dF y SEM
         this_cluster_ind=cluster_ind{ci};
         T(:)=all_cell_t(this_cluster_ind(1),1,:);
         cell_dF=[];
+        sec_baseline=5;
         for i=1:length(this_cluster_ind)
             dF(:)=nanmean(all_cell_dF(this_cluster_ind(i),:,:),2);
-             if if_norm(spi); dF=dF/max(dF);end
+            dF=dF-nanmean(dF(1:fs*sec_baseline)); % remove baseline 
+            % if if_norm(spi); dF=dF/max(dF);end
             cell_dF=[cell_dF; dF];
         end
+        
         y=nanmean(cell_dF,1);
-       if if_norm(spi); y=y/max(y);end
+        norm_factor=max(y);
+        if if_norm(spi); y=y/norm_factor;end
         SEM=nanstd(cell_dF,1)/sqrt(size(cell_dF,1));
+        if if_norm(spi); SEM=SEM/norm_factor;end
         
         figure_params.background=cluster_color(ci,:);figure_params.line='k';
         plot_curve_with_SEM(T,y,SEM,figure_params)
-        ylim([-1 MAXY/2])
-        if if_norm(spi); ylim([-0.1 1.5]); end
+        ylim([-1 MAXY*0.3])
+        if if_norm(spi); ylim([-0.25 1.5]); end
         xlim([0 45])
         xlabel('Time (sec)')
         ylabel('dF/F')
@@ -236,11 +287,13 @@ if new_tau
             x=t2(t_ind)'-t_start;
             this_y=y(t_ind)';
             g = fittype('a-b*exp(-c*x)');
+            if sum(isnan(this_y))>0; this_y(isnan(this_y))=nanmean(this_y); end
             f0 = fit(x,this_y,g,'StartPoint',[[ones(size(x)), -exp(-x)]\this_y; 1]);
             these_tau=f0.c;
             xx = linspace(0,10,50);
             plot(x,this_y,'b',xx,f0(xx),'k-');hold on
             tau(i,ri)=these_tau;
+            
         end
         
     end
@@ -250,7 +303,7 @@ if new_tau
         all_tau(i)=nanmean(tau(i,:));
     end
     %save(['all_tau' num2str(cluster_session_ind) '.mat'],'all_tau')
-     save(['all_tau' num2str(cluster_session_ind) '_B' num2str(baseline_method) '_n' num2str(n_clustering) '.mat'],'all_tau')
+     save(['all_tau' num2str(cluster_session_ind) all '_B' num2str(baseline_method) '_n' num2str(n_clustering) '.mat'],'all_tau')
 end
 
 
@@ -330,13 +383,17 @@ for ti=1:length(traits_to_plot)
     if nh4(ti)==1 % normal distribution
         [h,p(ti)] = ttest2(all_y(cluster_ind{1}),all_y(cluster_ind{2}));
     else
-        [p(ti),tbl,stats{ti}]  = kruskalwallis(all_y,clustering,'off');
+        [p(ti),tbl,ks_stats{ti}]  = kruskalwallis(all_y,clustering,'off');
+        cks{ti}=multcompare(ks_stats{ti},'CType','bonferroni','Display','off');
     end
     if p(ti)<0.05
         plot([1 2],[max(all_y)*1.03 max(all_y)*1.03],'r'); hold on
     end
+    
+    
     if length(cluster_ind)>2
-        [p4(ti),tbl,stats{ti}]  = kruskalwallis(all_y,clustering,'off');
+        [p4(ti),tbl,ks_stats{ti}]  = kruskalwallis(all_y,clustering,'off');
+        cks{ti}=multcompare(ks_stats{ti},'CType','bonferroni','Display','off');
         %% compare 2 to 3
         if nh4(ti)==1 % normal distribution
             [h,p1(ti)] = ttest2(all_y(cluster_ind{2}),all_y(cluster_ind{3}));
@@ -368,18 +425,6 @@ for ti=1:length(traits_to_plot)
     title(['session ' num2str(cluster_session_ind) ', B' num2str(baseline_method)]) 
 end
 
-% get the C matrix with speciifc p values from stats, with correction 
-if n_clustering==3
-    c=[];
-    for ti=1:length(traits_to_plot)
-        if ti==1; figure; end
-        c = [c; multcompare(stats{ti},'CType','bonferroni')];
-        %c = multcompare(stats,'CType','dunn-sidak');
-        %c = multcompare(stats,'CType','hsd');
-    end
-    disp(c)
-end
-
 disp('p = ')
 disp(p)
 if length(cluster_ind)>2
@@ -389,6 +434,10 @@ if length(cluster_ind)>2
     disp(p2)
 end
 
+for ti=1:length(traits_to_plot)
+    disp(traits_to_plot{ti})
+    disp(cks{ti})
+end
 
 
 1

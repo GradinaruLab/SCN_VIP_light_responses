@@ -3,9 +3,11 @@ function get_Inscopix_test6R_sessions
 % activity 
 
  mouse_ID={'50L','134R','148RR','168RL','177RR','264L','310L'}%
+ mouse_sex={'M' 'F' 'F' 'F' 'F' 'F' 'F' };
  all_cell_dF=[];
 all_cell_t=[]; 
 all_dF=[];
+mypath='D:\DATA_Glab\Inscopix\Inscopix_Projects\SCNVIP_test6R\';
  for idi=1:length(mouse_ID)
      trial_info.sess_num=1;
      trial_info.estrus=[];
@@ -17,7 +19,8 @@ all_dF=[];
      trial_info.ROI_method='Ins';
      trial_info.fs=5; % Hz
      mouse_info.ID=mouse_ID{idi};
-     cd (['C:\Users\Anat\Documents\Inscopix_Projects\SCNVIP_test6R\VIPGC' mouse_ID{idi} '_test6R'])
+     
+     cd ([mypath 'VIPGC' mouse_ID{idi} '_test6R'])
      if exist (['VIPGC' mouse_ID{idi} 'test6R_results_B' num2str(trial_info.baseline_method) '.mat'])
          load(['VIPGC' mouse_ID{idi} 'test6R_results_B' num2str(trial_info.baseline_method) '.mat'])
      else

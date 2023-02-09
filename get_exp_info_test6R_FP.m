@@ -108,9 +108,6 @@ switch exp
         states={'White light' , 'Opn4 ant. white',  'DMSO','Red light' , 'Opn4 ant. red' };
         intensities=[4.49e14, 4.49e14, 4.49e14, 1.95E14, 1.95E14];
 
-        % with bluw elight
-       % states={'White light' , 'Opn4 ant. white',  'DMSO','Red light' , 'Opn4 ant. red' ,'blue dim light' ,'blue bright light' , 'Opn4 ant. blue dim' 'Opn4 ant. blue bright', 'Opn4 ant. white','red dim light' ,'red bright light' };
-        
         %b_states{1}='Before'; b_states{2}='After Opn4 antagonist'; b_states{3}='Before'; b_states{4}='After DMSO';
       %  styles={'k-', 'k--','k-.','k:' 'k-.','k:','k--','k:' 'k-.','k:', 'k--','k:' 'k-.'};
         styles2={'k-', 'k--','k-.','r:' 'r-.','b-','b--' 'b-.','b:', 'k--','r:' 'r-.'};
@@ -171,60 +168,113 @@ switch exp
         ind=27; mouse_info{ind}.ID='VIPGC288RL';mouse_info{ind}.side='R';mouse_info{ind}.Gender='M'; mouse_info{ind}.rig='TDT_test6R_red';mouse_info{ind}.date='081021';mouse_info{ind}.Sname='test6R10';
         ind=28; mouse_info{ind}.ID='VIPGC296R';mouse_info{ind}.side='R';mouse_info{ind}.Gender='M'; mouse_info{ind}.rig='TDT_test6R_red';mouse_info{ind}.date='081021';mouse_info{ind}.Sname='test6R10';
  
-     case 'opn4_B' %%%%%% 07072022 to be edited by Sayan 
+     case 'opn4_B' %%%%%% 
         
         my_path='D:\DATA_Glab\fiberphotometry\TDT_test6R_opn4_antagonist\';
         % new experiment June-July 2022. in the new Chen facility. using
-        % Lumincor light engine- only 438nm and 650nm,matched intensities, with and without
+        % Lumincore light engine- only 438nm and 650nm,matched intensities, with and without
         % opn4 antagonist 
-        states={'438nm' , 'Opn4 ant. 438nm',  'DMSO','650nm' , 'Opn4 ant. 650nm' };
-        intensities=[5.4e14, 5.4e14, 5.4e14, 5.4E14, 5.4E14];
+      
+        states={'438nm' , 'Opn4 ant 438nm','650nm' , 'Opn4 ant 650nm' };
+        intensities=[5.4e14, 5.4e14, 5.4E14, 5.4E14];
+        
+        %  states={'438nm' , 'Opn4 ant 438nm', 'DMSO','650nm' , 'Opn4 ant 650nm' };
+        %intensities=[5.4e14, 5.4e14, 5.4e14, 5.4E14, 5.4E14];
+      %  
 
         % with bluw elight
        % states={'White light' , 'Opn4 ant. white',  'DMSO','Red light' , 'Opn4 ant. red' ,'blue dim light' ,'blue bright light' , 'Opn4 ant. blue dim' 'Opn4 ant. blue bright', 'Opn4 ant. white','red dim light' ,'red bright light' };
         
         %b_states{1}='Before'; b_states{2}='After Opn4 antagonist'; b_states{3}='Before'; b_states{4}='After DMSO';
       %  styles={'k-', 'k--','k-.','k:' 'k-.','k:','k--','k:' 'k-.','k:', 'k--','k:' 'k-.'};
-        styles2={'k-', 'k--','k-.','r:' 'r-.','b-','b--' 'b-.','b:', 'k--','r:' 'r-.'};
-        g_colors={'b', 'b','b','r','r','r' 'b', 'b','b','b','b' 'b','b', 'b','k' 'k'};
+        styles2={'k-', 'k--','r-.','r:' 'r-.','b-','b--' 'b-.','b:', 'k--','r:' 'r-.'};
+        g_colors={'b', 'b','r','r','r','b' 'k', 'k','k','k','r' 'r','r', 'r','r' 'r'};
        
-        Groups={[1:9],[10:13],[14:17],[18:25],[26:28]}; % without blue light
-       
-              
-        % full white light
+           
+        % blue light
         ind=0;
-        ind=ind+1; mouse_info{ind}.ID='VIPGC296R';mouse_info{ind}.side='R';mouse_info{ind}.Gender='M'; mouse_info{ind}.rig='TDT_test6R_red';mouse_info{ind}.date='071921';mouse_info{ind}.Sname='test6R3';
-        ind=ind+1; mouse_info{ind}.ID='VIPGC298L';mouse_info{ind}.side='R';mouse_info{ind}.Gender='F'; mouse_info{ind}.rig='TDT_test6R_red';mouse_info{ind}.date='072121';mouse_info{ind}.Sname='test6R3';
-        ind=ind+1; mouse_info{ind}.ID='VIPGC296R';mouse_info{ind}.side='R';mouse_info{ind}.Gender='M'; mouse_info{ind}.rig='TDT_test6R_red';mouse_info{ind}.date='071921';mouse_info{ind}.Sname='test6R3';
-        ind=ind+1; mouse_info{ind}.ID='VIPGC298L';mouse_info{ind}.side='R';mouse_info{ind}.Gender='F'; mouse_info{ind}.rig='TDT_test6R_red';mouse_info{ind}.date='072121';mouse_info{ind}.Sname='test6R3';
- 
-
-        % opn4 antagonist
-        ind=ind+1; mouse_info{ind}.ID='VIPGC262R';mouse_info{ind}.side='R';mouse_info{ind}.Gender='M'; mouse_info{ind}.rig='TDT_test6R_red';mouse_info{ind}.date='020221';mouse_info{ind}.Sname='test6R4';%
-        ind=ind+1; mouse_info{ind}.ID='VIPGC286R';mouse_info{ind}.side='R';mouse_info{ind}.Gender='M'; mouse_info{ind}.rig='TDT_test6R_red';mouse_info{ind}.date='071921';mouse_info{ind}.Sname='test6R4';
-        ind=ind+1; mouse_info{ind}.ID='VIPGC288RL';mouse_info{ind}.side='R';mouse_info{ind}.Gender='M'; mouse_info{ind}.rig='TDT_test6R_red';mouse_info{ind}.date='071921';mouse_info{ind}.Sname='test6R4';
-        ind=ind+1; mouse_info{ind}.ID='VIPGC298L';mouse_info{ind}.side='R';mouse_info{ind}.Gender='F'; mouse_info{ind}.rig='TDT_test6R_red';mouse_info{ind}.date='072121';mouse_info{ind}.Sname='test6R4';
-
-        % DMSO only
-        ind=ind+1; mouse_info{ind}.ID='VIPGC286R';mouse_info{ind}.side='R';mouse_info{ind}.Gender='M'; mouse_info{ind}.rig='TDT_test6R_red';mouse_info{ind}.date='072121';mouse_info{ind}.Sname='test6R6';
-        ind=ind+1; mouse_info{ind}.ID='VIPGC288RL';mouse_info{ind}.side='R';mouse_info{ind}.Gender='M'; mouse_info{ind}.rig='TDT_test6R_red';mouse_info{ind}.date='072121';mouse_info{ind}.Sname='test6R6';
-        ind=ind+1; mouse_info{ind}.ID='VIPGC296R';mouse_info{ind}.side='R';mouse_info{ind}.Gender='M'; mouse_info{ind}.rig='TDT_test6R_red';mouse_info{ind}.date='072121';mouse_info{ind}.Sname='test6R6';
-        ind=ind+1; mouse_info{ind}.ID='VIPGC298L';mouse_info{ind}.side='R';mouse_info{ind}.Gender='F'; mouse_info{ind}.rig='TDT_test6R_red';mouse_info{ind}.date='072721';mouse_info{ind}.Sname='test6R6';
+        gi=0;
+             ind=ind+1; mouse_info{ind}.ID='VIPGC313RL';mouse_info{ind}.side='L';mouse_info{ind}.Gender='M'; mouse_info{ind}.rig='TDT_test6R_red';mouse_info{ind}.date='060222';mouse_info{ind}.Sname='test6R2_438';
+       ind=ind+1; mouse_info{ind}.ID='VIPGC324RR';mouse_info{ind}.side='R';mouse_info{ind}.Gender='F'; mouse_info{ind}.rig='TDT_test6R_red';mouse_info{ind}.date='053022';mouse_info{ind}.Sname='test6R4_438';
+        ind=ind+1; mouse_info{ind}.ID='VIPGC318L';mouse_info{ind}.side='R';mouse_info{ind}.Gender='M'; mouse_info{ind}.rig='TDT_test6R_red';mouse_info{ind}.date='052722';mouse_info{ind}.Sname='test6R2_438';
+       % ind=ind+1; mouse_info{ind}.ID='VIPGC329RL';mouse_info{ind}.side='R';mouse_info{ind}.Gender='F'; mouse_info{ind}.rig='TDT_test6R_red';mouse_info{ind}.date='052622';mouse_info{ind}.Sname='test6R5_438';
         
-        % room Red light
-        ind=ind+1; mouse_info{ind}.ID='VIPGC246RL';mouse_info{ind}.side='L';mouse_info{ind}.Gender='F'; mouse_info{ind}.rig='TDT_test6R_red';mouse_info{ind}.date='101420';mouse_info{ind}.Sname='test6Rred1';
-        ind=ind+1; mouse_info{ind}.ID='VIPGC247RRL';mouse_info{ind}.side='R';mouse_info{ind}.Gender='F'; mouse_info{ind}.rig='TDT_test6R_red';mouse_info{ind}.date='101420';mouse_info{ind}.Sname='test6Rred1';
-        ind=ind+1; mouse_info{ind}.ID='VIPGC259R';mouse_info{ind}.side='R';mouse_info{ind}.Gender='F'; mouse_info{ind}.rig='TDT_test6R_red';mouse_info{ind}.date='101420';mouse_info{ind}.Sname='test6Rred1';
-        ind=ind+1; mouse_info{ind}.ID='VIPGC260L';mouse_info{ind}.side='L';mouse_info{ind}.Gender='F'; mouse_info{ind}.rig='TDT_test6R_red';mouse_info{ind}.date='101420';mouse_info{ind}.Sname='test6Rred1';
+        %ind=ind+1; mouse_info{ind}.ID='VIPGC349R';mouse_info{ind}.side='R';mouse_info{ind}.Gender='M'; mouse_info{ind}.rig='TDT_test6R_red';mouse_info{ind}.date='081822';mouse_info{ind}.Sname='test6R2_438';
+     %  ind=ind+1; mouse_info{ind}.ID='VIPGC354RL';mouse_info{ind}.side='L';mouse_info{ind}.Gender='F'; mouse_info{ind}.rig='TDT_test6R_red';mouse_info{ind}.date='081922';mouse_info{ind}.Sname='test6R2_438';
+        
+        ind=ind+1; mouse_info{ind}.ID='VIPGC366L';mouse_info{ind}.side='L';mouse_info{ind}.Gender='F'; mouse_info{ind}.rig='TDT_test6R_red';mouse_info{ind}.date='111822';mouse_info{ind}.Sname='test6R2_438';
+        ind=ind+1; mouse_info{ind}.ID='VIPGC375L';mouse_info{ind}.side='R';mouse_info{ind}.Gender='F'; mouse_info{ind}.rig='TDT_test6R_red';mouse_info{ind}.date='111922';mouse_info{ind}.Sname='test6R2_438';
+        ind=ind+1; mouse_info{ind}.ID='VIPGC371R';mouse_info{ind}.side='R';mouse_info{ind}.Gender='F'; mouse_info{ind}.rig='TDT_test6R_red';mouse_info{ind}.date='120322';mouse_info{ind}.Sname='test6R2_438';
+     %   ind=ind+1; mouse_info{ind}.ID='VIPGC329RL';mouse_info{ind}.side='R';mouse_info{ind}.Gender='M'; mouse_info{ind}.rig='TDT_test6R_red';mouse_info{ind}.date='120622';mouse_info{ind}.Sname='test6R2_438';
+ 
+     gi=gi+1;
+       Groups{gi}=[1:ind];
 
+        % opn4 antagonist blue
+        ind=ind+1; mouse_info{ind}.ID='VIPGC313RL';mouse_info{ind}.side='L';mouse_info{ind}.Gender='M'; mouse_info{ind}.rig='TDT_test6R_red';mouse_info{ind}.date='060222';mouse_info{ind}.Sname='test6R4_438';%
+        ind=ind+1; mouse_info{ind}.ID='VIPGC324RR';mouse_info{ind}.side='R';mouse_info{ind}.Gender='M'; mouse_info{ind}.rig='TDT_test6R_red';mouse_info{ind}.date='053022';mouse_info{ind}.Sname='test6R6_438';
+        ind=ind+1; mouse_info{ind}.ID='VIPGC318L';mouse_info{ind}.side='R';mouse_info{ind}.Gender='M'; mouse_info{ind}.rig='TDT_test6R_red';mouse_info{ind}.date='052722';mouse_info{ind}.Sname='test6R4_438';
+        %        ind=ind+1; mouse_info{ind}.ID='VIPGC329RL';mouse_info{ind}.side='R';mouse_info{ind}.Gender='F'; mouse_info{ind}.rig='TDT_test6R_red';mouse_info{ind}.date='052622';mouse_info{ind}.Sname='test6R7_438';
+        
+%        ind=ind+1; mouse_info{ind}.ID='VIPGC349R';mouse_info{ind}.side='R';mouse_info{ind}.Gender='M'; mouse_info{ind}.rig='TDT_test6R_red';mouse_info{ind}.date='081822';mouse_info{ind}.Sname='test6R4_438';
+     % ind=ind+1; mouse_info{ind}.ID='VIPGC354RL';mouse_info{ind}.side='L';mouse_info{ind}.Gender='F'; mouse_info{ind}.rig='TDT_test6R_red';mouse_info{ind}.date='081922';mouse_info{ind}.Sname='test6R4_438';
+        
 
-        % Red light after opn4 antagonist
-        ind=ind+1; mouse_info{ind}.ID='VIPGC286R';mouse_info{ind}.side='R';mouse_info{ind}.Gender='M'; mouse_info{ind}.rig='TDT_test6R_red';mouse_info{ind}.date='081021';mouse_info{ind}.Sname='test6R10';
-        ind=ind+1; mouse_info{ind}.ID='VIPGC288RL';mouse_info{ind}.side='R';mouse_info{ind}.Gender='M'; mouse_info{ind}.rig='TDT_test6R_red';mouse_info{ind}.date='081021';mouse_info{ind}.Sname='test6R10';
-        ind=ind+1; mouse_info{ind}.ID='VIPGC296R';mouse_info{ind}.side='R';mouse_info{ind}.Gender='M'; mouse_info{ind}.rig='TDT_test6R_red';mouse_info{ind}.date='081021';mouse_info{ind}.Sname='test6R10';
-         ind=ind+1; mouse_info{ind}.ID='VIPGC296R';mouse_info{ind}.side='R';mouse_info{ind}.Gender='M'; mouse_info{ind}.rig='TDT_test6R_red';mouse_info{ind}.date='081021';mouse_info{ind}.Sname='test6R10';
-      
-            
+        ind=ind+1; mouse_info{ind}.ID='VIPGC366L';mouse_info{ind}.side='L';mouse_info{ind}.Gender='F'; mouse_info{ind}.rig='TDT_test6R_red';mouse_info{ind}.date='111822';mouse_info{ind}.Sname='test6R4_438';
+        ind=ind+1; mouse_info{ind}.ID='VIPGC375L';mouse_info{ind}.side='R';mouse_info{ind}.Gender='F'; mouse_info{ind}.rig='TDT_test6R_red';mouse_info{ind}.date='111922';mouse_info{ind}.Sname='test6R4_438';
+        ind=ind+1; mouse_info{ind}.ID='VIPGC371R';mouse_info{ind}.side='R';mouse_info{ind}.Gender='F'; mouse_info{ind}.rig='TDT_test6R_red';mouse_info{ind}.date='120322';mouse_info{ind}.Sname='test6R4_438';
+   %     ind=ind+1; mouse_info{ind}.ID='VIPGC329RL';mouse_info{ind}.side='R';mouse_info{ind}.Gender='M'; mouse_info{ind}.rig='TDT_test6R_red';mouse_info{ind}.date='120622';mouse_info{ind}.Sname='test6R4_438';
+        
+       gi=gi+1;
+       Groups{gi}=[Groups{gi-1}(end)+1:ind];
+  
+       %missing DMSO data 12/27/22
+%         % DMSO only
+%         ind=ind+1; mouse_info{ind}.ID='VIPGC286R';mouse_info{ind}.side='R';mouse_info{ind}.Gender='M'; mouse_info{ind}.rig='TDT_test6R_red';mouse_info{ind}.date='072121';mouse_info{ind}.Sname='test6R6';
+%         ind=ind+1; mouse_info{ind}.ID='VIPGC288RL';mouse_info{ind}.side='R';mouse_info{ind}.Gender='M'; mouse_info{ind}.rig='TDT_test6R_red';mouse_info{ind}.date='072121';mouse_info{ind}.Sname='test6R6';
+%         ind=ind+1; mouse_info{ind}.ID='VIPGC296R';mouse_info{ind}.side='R';mouse_info{ind}.Gender='M'; mouse_info{ind}.rig='TDT_test6R_red';mouse_info{ind}.date='072121';mouse_info{ind}.Sname='test6R6';
+%         ind=ind+1; mouse_info{ind}.ID='VIPGC298L';mouse_info{ind}.side='R';mouse_info{ind}.Gender='F'; mouse_info{ind}.rig='TDT_test6R_red';mouse_info{ind}.date='072721';mouse_info{ind}.Sname='test6R6';
+
+%         ind=ind+1; mouse_info{ind}.ID='VIPGC318L';mouse_info{ind}.side='L';mouse_info{ind}.Gender='M'; mouse_info{ind}.rig='TDT_test6R_red';mouse_info{ind}.date='082722';mouse_info{ind}.Sname='test6R2_438';
+%         ind=ind+1; mouse_info{ind}.ID='VIPGC371R';mouse_info{ind}.side='R';mouse_info{ind}.Gender='M'; mouse_info{ind}.rig='TDT_test6R_red';mouse_info{ind}.date='092722';mouse_info{ind}.Sname='test6R2_438';
+%         ind=ind+1; mouse_info{ind}.ID='VIPGC329RL';mouse_info{ind}.side='R';mouse_info{ind}.Gender='M'; mouse_info{ind}.rig='TDT_test6R_red';mouse_info{ind}.date='082722';mouse_info{ind}.Sname='test6R2_438';
+%         ind=ind+1; mouse_info{ind}.ID='VIPGC349R';mouse_info{ind}.side='R';mouse_info{ind}.Gender='F'; mouse_info{ind}.rig='TDT_test6R_red';mouse_info{ind}.date='082322';mouse_info{ind}.Sname='test6R2_438';
+% 
+%           gi=gi+1;
+%           Groups{gi}=[Groups{gi-1}(end)+1:ind];
+         
+        %  Red light 650nm
+%         ind=ind+1; mouse_info{ind}.ID='VIPGC313RL';mouse_info{ind}.side='L';mouse_info{ind}.Gender='F'; mouse_info{ind}.rig='TDT_test6R_red';mouse_info{ind}.date='060222';mouse_info{ind}.Sname='test6R1_650';
+         ind=ind+1; mouse_info{ind}.ID='VIPGC324RR';mouse_info{ind}.side='R';mouse_info{ind}.Gender='F'; mouse_info{ind}.rig='TDT_test6R_red';mouse_info{ind}.date='053022';mouse_info{ind}.Sname='test6R3_650';
+         ind=ind+1; mouse_info{ind}.ID='VIPGC318L';mouse_info{ind}.side='R';mouse_info{ind}.Gender='F'; mouse_info{ind}.rig='TDT_test6R_red';mouse_info{ind}.date='052722';mouse_info{ind}.Sname='test6R1_650';
+%        %ind=ind+1; mouse_info{ind}.ID='VIPGC329RL';mouse_info{ind}.side='R';mouse_info{ind}.Gender='F'; mouse_info{ind}.rig='TDT_test6R_red';mouse_info{ind}.date='052622';mouse_info{ind}.Sname='test6R4_650';
+      %  ind=ind+1; mouse_info{ind}.ID='VIPGC349R';mouse_info{ind}.side='R';mouse_info{ind}.Gender='M'; mouse_info{ind}.rig='TDT_test6R_red';mouse_info{ind}.date='081822';mouse_info{ind}.Sname='test6R1_650';
+        ind=ind+1; mouse_info{ind}.ID='VIPGC354RL';mouse_info{ind}.side='L';mouse_info{ind}.Gender='F'; mouse_info{ind}.rig='TDT_test6R_red';mouse_info{ind}.date='081922';mouse_info{ind}.Sname='test6R1_650';
+               
+
+        ind=ind+1; mouse_info{ind}.ID='VIPGC366L';mouse_info{ind}.side='L';mouse_info{ind}.Gender='F'; mouse_info{ind}.rig='TDT_test6R_red';mouse_info{ind}.date='111822';mouse_info{ind}.Sname='test6R1_650';
+        ind=ind+1; mouse_info{ind}.ID='VIPGC375L';mouse_info{ind}.side='R';mouse_info{ind}.Gender='F'; mouse_info{ind}.rig='TDT_test6R_red';mouse_info{ind}.date='111922';mouse_info{ind}.Sname='test6R1_650';
+        ind=ind+1; mouse_info{ind}.ID='VIPGC371R';mouse_info{ind}.side='R';mouse_info{ind}.Gender='F'; mouse_info{ind}.rig='TDT_test6R_red';mouse_info{ind}.date='120322';mouse_info{ind}.Sname='test6R1_650';
+       % ind=ind+1; mouse_info{ind}.ID='VIPGC329RL';mouse_info{ind}.side='R';mouse_info{ind}.Gender='M'; mouse_info{ind}.rig='TDT_test6R_red';mouse_info{ind}.date='120622';mouse_info{ind}.Sname='test6R1_650';
+        gi=gi+1;
+         Groups{gi}=[Groups{gi-1}(end)+1:ind];
+
+         % Red light after opn4 antagonist 650nm
+         %         ind=ind+1; mouse_info{ind}.ID='VIPGC313RL';mouse_info{ind}.side='L';mouse_info{ind}.Gender='M'; mouse_info{ind}.rig='TDT_test6R_red';mouse_info{ind}.date='060222';mouse_info{ind}.Sname='test6R3_650';
+         ind=ind+1; mouse_info{ind}.ID='VIPGC324RR';mouse_info{ind}.side='R';mouse_info{ind}.Gender='M'; mouse_info{ind}.rig='TDT_test6R_red';mouse_info{ind}.date='053022';mouse_info{ind}.Sname='test6R5_650';
+         ind=ind+1; mouse_info{ind}.ID='VIPGC318L';mouse_info{ind}.side='R';mouse_info{ind}.Gender='M'; mouse_info{ind}.rig='TDT_test6R_red';mouse_info{ind}.date='052722';mouse_info{ind}.Sname='test6R3_650';
+         %        % ind=ind+1; mouse_info{ind}.ID='VIPGC329RL';mouse_info{ind}.side='R';mouse_info{ind}.Gender='M'; mouse_info{ind}.rig='TDT_test6R_red';mouse_info{ind}.date='052622';mouse_info{ind}.Sname='test6R6_650';
+        % ind=ind+1; mouse_info{ind}.ID='VIPGC349R';mouse_info{ind}.side='R';mouse_info{ind}.Gender='M'; mouse_info{ind}.rig='TDT_test6R_red';mouse_info{ind}.date='081822';mouse_info{ind}.Sname='test6R3_650';
+         ind=ind+1; mouse_info{ind}.ID='VIPGC354RL';mouse_info{ind}.side='L';mouse_info{ind}.Gender='F'; mouse_info{ind}.rig='TDT_test6R_red';mouse_info{ind}.date='081922';mouse_info{ind}.Sname='test6R3_650';
+         
+
+        
+        ind=ind+1; mouse_info{ind}.ID='VIPGC366L';mouse_info{ind}.side='L';mouse_info{ind}.Gender='F'; mouse_info{ind}.rig='TDT_test6R_red';mouse_info{ind}.date='111822';mouse_info{ind}.Sname='test6R3_650';
+        ind=ind+1; mouse_info{ind}.ID='VIPGC375L';mouse_info{ind}.side='R';mouse_info{ind}.Gender='F'; mouse_info{ind}.rig='TDT_test6R_red';mouse_info{ind}.date='111922';mouse_info{ind}.Sname='test6R3_650';
+        ind=ind+1; mouse_info{ind}.ID='VIPGC371R';mouse_info{ind}.side='R';mouse_info{ind}.Gender='F'; mouse_info{ind}.rig='TDT_test6R_red';mouse_info{ind}.date='120322';mouse_info{ind}.Sname='test6R3_650';
+        %ind=ind+1; mouse_info{ind}.ID='VIPGC329RL';mouse_info{ind}.side='R';mouse_info{ind}.Gender='M'; mouse_info{ind}.rig='TDT_test6R_red';mouse_info{ind}.date='120622';mouse_info{ind}.Sname='test6R3_650';
+        gi=gi+1;
+            Groups{gi}=[Groups{gi-1}(end)+1:ind];
 end
 
 

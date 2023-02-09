@@ -1,10 +1,12 @@
 function all_lumencore_dF
 
 exp= 'GCaMP'
+%exp='GFP'
 %ALL_ID= {'VIPGC113L','VIPGC113Liso'};%,'VIPGCA116R','VIPGC119LL','VIPGC122R','VIPGC123L'};
 switch exp
     case 'GCaMP'
         ALL_ID= {'VIPGC106LL','VIPGC113L','VIPGCA116R','VIPGC119LL','VIPGC122R','VIPGC123L'};%,'VIPGCA116R','VIPGC119LL','VIPGC122R','VIPGC123L'};
+        ALL_ID_sex={'M' 'M' 'F' 'F' 'F' 'F'};
     case 'GFP'
         ALL_ID={'VIPGFP12R','VIPGFP14RL'};
 end
@@ -13,13 +15,13 @@ end
 fs=1.0173e+03;
 
 for id=1:length(ALL_ID)   
-    [color_names1,MEAN_COLOR_t{id},MEAN_COLOR_dF{id},diff_sec(id)] = FP_analysis_lumencore(ALL_ID{id});
+    [color_names1,MEAN_COLOR_t{id},MEAN_COLOR_dF{id},diff_sec(id),analysis(id)] = FP_analysis_lumencore(ALL_ID{id});
 end
 
 colors_bar=[0.4940, 0.1840, 0.5560;0, 0.4470, 0.7410;0 0.9 0.9;0.0000 0.5020 0.5020 ;0, 0.5, 0;0.8500, 0.3250, 0.0980;1, 0, 0];
 CHECK_FIG=1
 
-
+clear this_max_by_color
 for ci=1:length(color_names1)
     this_color_L=[];
     all_id_this_color_df=[];
@@ -58,6 +60,16 @@ for ci=1:length(color_names1)
         resp(ci,idi)=mean(all_id_this_color_df(idi,resp_ind))-meanBase_this_ID(idi);
     end
     
+     %% calculate P12 and P34 for each animal, for each color
+     for idi=1:length(ALL_ID)
+         this_max_by_color(idi,:)=analysis(idi).max_values_by_color(ci,:);   
+         this_max_by_color_norm(idi,:)=this_max_by_color(idi,:)/max(this_max_by_color(idi,:));
+     end
+    diff_max=diff(this_max_by_color,1,2); 
+    diff_max_p12(ci,:)=diff_max(:,1);% first index is color, second is id 
+    diff_max_p23(ci,:)=diff_max(:,2);
+    diff_max_p34(ci,:)=diff_max(:,3);
+    
     ALL_mean_color_dF{ci}=mean(all_id_this_color_df);
     ALL_mean_color_t{ci}=mean(all_id_this_color_t);
     ALL_mean_color_dF_SEM{ci}=std(all_id_this_color_df)/sqrt(size(all_id_this_color_df,1));
@@ -69,6 +81,34 @@ for ci=1:length(color_names1)
 end
 
 wavelength_str={'395' '438' '473' '513' '560' '586' '650'};
+
+% plot peak change 
+clear data_to_plot
+data_to_plot{1}=diff_max_p12;
+data_to_plot{2}=diff_max_p23;
+%data_to_plot{3}=diff_max_p34;
+%y_labels={'P12', 'P23', 'P34'};
+y_labels={'P12', 'P23'};
+figure
+for i=1:length(data_to_plot)
+    subplot (1,length(data_to_plot),i)
+    this_data_to_plot=data_to_plot{i};
+    for ci=1:length(color_names1)
+        sem=std(this_data_to_plot(ci,:))/sqrt(size(this_data_to_plot,1));
+        ph1=plot (ci, median(this_data_to_plot(ci,:)),'ok'); hold on %% first index is color, second is id
+        ph1.MarkerSize=10;
+        lh=line([ci ci], [median(this_data_to_plot(ci,:))+sem median(this_data_to_plot(ci,:))-sem]);hold on
+        lh.Color='k';
+    end
+    xlim([0.5 size(this_data_to_plot,1)+0.5])
+     ylim([-4 4])
+    lh2=line([0.5 size(this_data_to_plot,1)+0.5],[0 0]); lh2.Color='k';
+    ylabel(y_labels{i})
+    xlabel('wavelength (nm)')
+    set(gca,'Xtick',[1:7])
+    set(gca,'Xticklabel',wavelength_str)
+end
+
 % plot response by wavelength
 figure
 for ci=1:length(color_names1)   

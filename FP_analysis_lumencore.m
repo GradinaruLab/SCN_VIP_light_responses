@@ -1,4 +1,4 @@
-function [color_names1,MEAN_COLOR_t,MEAN_COLOR_dF,diff] = FP_analysis_lumencore(ID)
+function [color_names1,MEAN_COLOR_t,MEAN_COLOR_dF,diff,analysis] = FP_analysis_lumencore(ID)
 experiment_type='VIPFP'
 %experiment_type='VIPFP_Onset'
 %experiment_type='iCreV'
@@ -6,11 +6,12 @@ clear  files1 y all_dF color_order color_names1
 LFcut = 2; % cut-off frequency of lowpass filter
 order = 4; % N-th order for butterworth filter
 POWER=0;
-FIG=1;
+FIG=0;
+
 %%
 if nargin == 0
     ID='VIPGCA116R'
-    FIG=1;
+    FIG=0;
 end
 [NUMpar,TXTpar,RAWpar]=xlsread('D:\DATA_Glab\fiberphotometry\Iumencore2.xlsx');
 
@@ -70,7 +71,6 @@ for i=4:10
 end
 
 
-
 switch rig
     case 'TDT'
         path='D:\DATA_Glab\fiberphotometry\TDT_FP\';
@@ -96,7 +96,7 @@ switch rig
         fs = y.fs; %Syn TDT FP rig
 end
 
-t1=1; %skipping the first 1 seconds, the freq and intensity set
+t1=0.5*fs; %skipping the first 0.5 seconds, the freq and intensity set
 %all_dF.Data= all_dF.Data(:,t1:end);
 
 all_dF.data= all_dF.data(:,t1:end);
@@ -126,6 +126,8 @@ switch files1
 diff=-3.4;
 end
 
+figure
+
 for i=1:length(color_order)% go over each color
     this_start=start_sec+Sess_length*(i-1); % each session is 345 sec
     this_ind=intersect(find(all_dF.t>this_start-start_sec), find(all_dF.t<this_start+345));
@@ -135,6 +137,11 @@ for i=1:length(color_order)% go over each color
     %t=all_dF.t(this_ind)-this_start+start_sec;%
     t=all_dF.t(this_ind)-this_start+start_sec+diff;% AK 11/18/21
     
+    subplot(length(color_order),1,i)
+    plot(t,dF)
+    ylabel(color_names1{find(color_order==i)})
+    if i==1 ;title(ID); end
+    xlim([0 350])
     
     rep_ind_length=[];
     this_color_df=[];
@@ -155,6 +162,12 @@ for i=1:length(color_order)% go over each color
         this_color_df=[this_color_df ;repeat_df];
         this_color_t=[this_color_t ;repeat_t];
         if FIG; ph1=plot(repeat_t,repeat_df); ylim([0 17]);xlim([8 42]); ph1.Color=[0.3 0.3 0.3]; hold on;  end
+        
+        %for i=1:length(light_array.light_on)
+           % figure; plot (repeat_df)
+         
+           [max_val(j) ~]=max(repeat_df);
+        %end
     end
     find(color_order==i);
      if FIG; ph=plot(repeat_t,mean(this_color_df)); ph.LineWidth=2; ph.Color=[0 0 0]; title([ID ' ' color_names1{find(color_order==i)}]); end
@@ -162,8 +175,9 @@ for i=1:length(color_order)% go over each color
     MEAN_COLOR_t{find(color_order==i)}=mean(this_color_t);    
    % plot(all_dF.t(this_ind),all_dF.dF(this_ind)+i*2)
    % hold on
+   max_val_by_color(find(color_order==i),:)=max_val;
 end
-
+analysis.max_values_by_color=max_val_by_color;% 7 colors, 6 repeats
 end
 
 %% fit function, to remove ref from signal
