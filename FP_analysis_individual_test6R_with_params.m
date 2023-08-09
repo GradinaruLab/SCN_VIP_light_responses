@@ -75,6 +75,20 @@ Perc=NUMpar(1,5);
 %MinPeakP=4;% peak analysis parameter
 MinPeakP=NUMpar(1,3); % peak analysis parameter
 MinPeakW=4;% in seconds. later that should be read from xls file
+% define relevant time 08/06/2019
+TRANGE=[0 450]; time_epoc=0;
+%T1=light_array.light_on(1)-15;
+%TRANGE=[T1 T1+300]; time_epoc=0;
+%%%
+params.Zscore=Zscore;
+params.TRANGE=TRANGE;
+params.time_epoc=time_epoc;
+%Smth=0; % 102121 check 
+%Perc=NUMpar(1,5);%3;;
+params.Perc=Perc;
+%interval=NUMpar(1,1);
+params.interval=interval;
+%%%
 
 files_name1=[mouse_info.ID ' ' mouse_info.Gender ' ' mouse_info.side 'fiber ' mouse_info.date  ' '  mouse_info.Sname]
 files1=[mouse_info.ID '_' mouse_info.side 'fiber_' mouse_info.date '_' mouse_info.Sname];
@@ -141,14 +155,12 @@ end
 % put new dF to all_dF
 all_dF.dF=new_dF;
 
-% define relevant time 08/06/2019
-TRANGE=[0 450]; time_epoc=0;
-%T1=light_array.light_on(1)-15;
-%TRANGE=[T1 T1+300]; time_epoc=0;
 
 
-is_onset.is=0;
-[dF,t,all_dF]=get_df_from_raw_data2(all_dF,fs,NUMpar,t1,t2,TRANGE,time_epoc,is_onset);
+
+is_onset=0;
+[dF,t,all_dF]=get_df_from_raw_data2(all_dF,fs,params,t1,t2,is_onset);
+% (all_dF,fs,params,t1,t2,is_onset)
 
 %% check
 %figure;plot(t,dF);hold on; plot(all_dF.t,all_dF.dF);title(files_name1)
@@ -277,7 +289,7 @@ for i=1:length(light_array.light_on)
         plot(all_dF.t(inds),all_dF.dF(inds)); hold on
         plot([all_dF.t(inds(1)+max_ind) all_dF.t(inds(1)+max_ind)],[-0.2 max(all_dF.dF)],'r'); hold on
     end
-    new_inds=(inds(1)-length(inds)/2):(inds(end)+length(inds)/2);
+    new_inds=ceil(inds(1)-length(inds)/2):(inds(end)+length(inds)/2);
     new_t=[new_t all_dF.t(new_inds)];
     new_dF=[new_dF all_dF.dF(new_inds)];
 end
