@@ -1,5 +1,5 @@
 # SCN_VIP_light_responses
-SCN-VIP Light response Code: 
+SCN-VIP Light Response Code: 
 
 
 Figure 1: 
@@ -12,7 +12,7 @@ Light_spectrum_SpectraX
 read_opn4_digitized_data.m
 
 
-Figure 3 and 4: 
+Figures 3 and 4: 
 read_test6R_FP_general;
 get_exp_info_test6R_FP_v2;
 FP_analysis_individual_test6R_with_params;
@@ -39,8 +39,6 @@ Figure S4:
 Light_spectrum_animal_facility
 read_test6R_red_vs_full
 FP_analysis_individual_test6R
-finds_light_status
-get_df_from_raw_data2
 
 
 Also includes: 
